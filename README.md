@@ -10,7 +10,7 @@ With its modular MVC architecture and fully responsive design, RentSphere provid
 
 ## 📸 Sample Pages Preview
 
-![Home Page](Sample Images/admin_properties.png)
+<img src="./Sample Images/home.png" width="100%" alt="User Dashboard" />
 
 Homepage for Users and Landlords
 

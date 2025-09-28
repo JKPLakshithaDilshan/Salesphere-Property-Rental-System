@@ -99,37 +99,37 @@ Homepage for Users and Landlords
 ## 🖼️ Screenshots
 
 ### 🚀 Login Page
-![Login Page](Sample_Images/login.png)
+<img src="./Sample Images/login.png" width="100%" alt="Login Page" />
 
 ### 🧍 Tenant Side
 #### 🧍 Tenant Dashboard
-![Tenant Dashboard](sample_pages/profile.png)
+<img src="./Sample Images/profile.png" width="100%" alt="Tenant Dashboard" />
 
 #### 🧍 Browse Properties
-![Properties List](sample_pages/properties.png)
+<img src="./Sample Images/properties.png" width="100%" alt="Properties List" />
 
 #### 🧍 Book a Property
-![Booking Confirmation](sample_pages/book.png)
+<img src="./Sample Images/book.png" width="100%" alt="Booking Confirmation" />
 
 #### 🧍 Payment Success
-![Payment Success](sample_pages/payment_success.png)
+<img src="./Sample Images/payment_success.png" width="100%" alt="Payment Success" />
 
 #### 🧍 Leave Review
-![Review Form](sample_pages/review.png)
+<img src="./Sample Images/review.png" width="100%" alt="Review Form" />
 
 ### 👨‍✈️ Landlord Side
 #### 👨‍✈️ Landlord Dashboard
-![Landlord Properties](sample_pages/my-properties.png)
+<img src="./Sample Images/my-properties.png" width="100%" alt="Landlord Properties" />
 
 #### 👨‍✈️ Manage Bookings
-![Bookings View](sample_pages/bookings.png)
+<img src="./Sample Images/bookings.png" width="100%" alt="Bookings View" />
 
 ### 🧑‍💼 Admin Side
 #### 🧑‍💼 Admin Dashboard
-![Admin Users](sample_pages/admin_users.png)
+<img src="./Sample Images/admin_users.png" width="100%" alt="Admin Users" />
 
 #### 🧑‍💼 Manage Properties
-![Admin Properties](sample_pages/admin_properties.png)
+<img src="./Sample Images/admin_properties.png" width="100%" alt="Admin Properties" />
 
 ## 📢 Notification System
 - Real-time alerts for booking status changes, approvals, and reviews.

@@ -99,7 +99,7 @@ Homepage for Users and Landlords
 ## 🖼️ Screenshots
 
 ### 🚀 Login Page
-![Login Page](sample_pages/login.png)
+![Login Page](Sample_Images/login.png)
 
 ### 🧍 Tenant Side
 #### 🧍 Tenant Dashboard

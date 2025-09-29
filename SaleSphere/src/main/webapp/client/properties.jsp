@@ -146,6 +146,52 @@
       background-clip: text;
       font-weight: 800;
     }
+
+    .search-input {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: rgba(20, 184, 166, 0.5);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+      outline: none;
+    }
+
+    .filter-btn {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #14b8a6, #0d9488);
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4);
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(20, 184, 166, 0.5);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
   </style>
 </head>
 <body class="gradient-bg text-white font-sans overflow-x-hidden">
@@ -186,105 +232,209 @@
   <div class="absolute top-1/2 right-10 w-16 h-16 bg-purple-400/10 rounded-full blur-lg animate-bounce"></div>
 </section>
 
-<!-- Main Content -->
-<main class="py-20 relative">
+<!-- Search and Filter Section -->
+<section class="py-8 relative">
   <div class="container mx-auto px-6">
-
-    <c:if test="${empty properties}">
-      <div class="text-center py-20">
-        <div class="glass-effect rounded-3xl p-12 max-w-md mx-auto">
-          <i class="fas fa-home text-6xl text-teal-400 mb-6"></i>
-          <h3 class="text-2xl font-bold mb-4">No Properties Available</h3>
-          <p class="text-slate-400">Check back soon for new listings!</p>
+    <form id="searchForm" method="GET" action="${pageContext.request.contextPath}/properties" class="glass-effect rounded-3xl p-8 mb-8">
+      <!-- Search Bar -->
+      <div class="mb-6">
+        <div class="relative">
+          <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-teal-400 text-lg"></i>
+          <input
+                  type="text"
+                  id="searchInput"
+                  name="search"
+                  value="${searchTerm}"
+                  placeholder="Search by title, address, landlord name, or type..."
+                  class="search-input w-full pl-12 pr-4 py-4 rounded-xl text-white placeholder-slate-400"
+          >
         </div>
       </div>
-    </c:if>
 
-    <!-- Property Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <c:forEach var="property" items="${properties}" varStatus="status">
-        <div class="property-card rounded-3xl overflow-hidden group" style="animation-delay: ${status.index * 0.1}s">
+      <!-- Hidden status input -->
+      <input type="hidden" id="statusInput" name="status" value="${statusFilter}">
 
-          <!-- Property Image -->
-          <div class="relative overflow-hidden h-64">
-            <img src="${pageContext.request.contextPath}/assets/properties/${property.propertyId}.jpg"
-                 alt="${property.title}"
-                 class="property-image w-full h-full object-cover">
+      <!-- Filter Buttons -->
+      <div class="flex flex-wrap gap-3">
+        <button type="button" class="filter-btn ${statusFilter eq 'all' || empty statusFilter ? 'active' : ''} px-6 py-3 rounded-xl font-semibold text-white" data-status="all">
+          <i class="fas fa-th-large mr-2"></i>All Properties
+        </button>
+        <button type="button" class="filter-btn ${statusFilter eq 'Available' ? 'active' : ''} px-6 py-3 rounded-xl font-semibold text-white" data-status="Available">
+          <i class="fas fa-check-circle mr-2"></i>Available
+        </button>
+        <button type="button" class="filter-btn ${statusFilter eq 'Booked' ? 'active' : ''} px-6 py-3 rounded-xl font-semibold text-white" data-status="Booked">
+          <i class="fas fa-calendar-check mr-2"></i>Booked
+        </button>
+        <button type="button" class="filter-btn ${statusFilter eq 'Unavailable' ? 'active' : ''} px-6 py-3 rounded-xl font-semibold text-white" data-status="Unavailable">
+          <i class="fas fa-times-circle mr-2"></i>Unavailable
+        </button>
+        <button type="button" id="resetBtn" class="filter-btn px-6 py-3 rounded-xl font-semibold text-white ml-auto">
+          <i class="fas fa-redo mr-2"></i>Reset
+        </button>
+      </div>
 
-            <!-- Status Badge -->
-            <div class="absolute top-4 left-4 z-20">
-              <span class="px-4 py-2 rounded-full text-sm font-semibold text-white
-                <c:choose>
-                  <c:when test='${property.status eq "Available"}'>status-available</c:when>
-                  <c:when test='${property.status eq "Booked"}'>status-booked</c:when>
-                  <c:otherwise>status-unavailable</c:otherwise>
-                </c:choose>
-              ">
-                <i class="fas fa-circle mr-2"></i>${property.status}
-              </span>
-            </div>
+      <!-- Results Counter -->
+      <div class="mt-4 text-slate-300 text-sm">
+        <c:choose>
+          <c:when test="${not empty properties}">
+            <span>${properties.size()}</span> properties found
+          </c:when>
+          <c:otherwise>
+            <span>0</span> properties found
+          </c:otherwise>
+        </c:choose>
+      </div>
+    </form>
+  </div>
+</section>
 
-            <!-- Property ID -->
-            <div class="absolute top-4 right-4 z-20">
-              <span class="glass-effect px-3 py-1 rounded-full text-xs font-mono text-teal-400">
-                #${property.propertyId}
-              </span>
-            </div>
-          </div>
+<!-- Main Content -->
+<main class="pb-20 relative">
+  <div class="container mx-auto px-6">
 
-          <!-- Property Details -->
-          <div class="p-8 relative z-10">
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-teal-400 transition-colors duration-300">
-                ${property.title}
-            </h3>
-
-            <div class="flex items-center text-slate-300 mb-2">
-              <i class="fas fa-map-marker-alt text-teal-400 mr-3"></i>
-              <span>${property.address}</span>
-            </div>
-
-            <div class="flex items-center text-slate-400 text-sm mb-6">
-              <i class="fas fa-user text-teal-400 mr-3"></i>
-              <span>Owned by: <strong class="text-white">${property.landlordName}</strong></span>
-            </div>
-
-            <!-- Price and Book Button -->
-            <div class="flex justify-between items-center mb-6">
-              <div class="text-3xl font-black price-highlight">
-                Rs. ${property.rent}<span class="text-sm text-slate-400 font-normal">/month</span>
-              </div>
-
-              <a href="${pageContext.request.contextPath}/book-property?id=${property.propertyId}"
-                 class="btn-primary text-white px-6 py-3 rounded-xl font-semibold book-now-btn flex items-center space-x-2 transform transition-all duration-300"
-                 data-status="${property.status}">
-                <i class="fas fa-calendar-check"></i>
-                <span>Book Now</span>
-              </a>
-            </div>
-
-            <!-- Property Tags -->
-            <div class="flex flex-wrap gap-2">
-              <span class="glass-effect px-4 py-2 rounded-full text-sm font-medium">
-                <i class="fas fa-building mr-2 text-teal-400"></i>${property.type}
-              </span>
-              <span class="glass-effect px-4 py-2 rounded-full text-sm font-medium text-slate-300">
-                <i class="fas fa-envelope mr-2 text-blue-400"></i>${property.landlordEmail}
-              </span>
-            </div>
+    <c:choose>
+      <c:when test="${empty properties}">
+        <!-- Empty State -->
+        <div class="text-center py-20">
+          <div class="glass-effect rounded-3xl p-12 max-w-md mx-auto">
+            <i class="fas fa-search text-6xl text-teal-400 mb-6"></i>
+            <h3 class="text-2xl font-bold mb-4">No Properties Found</h3>
+            <p class="text-slate-400">Try adjusting your search or filters</p>
           </div>
         </div>
-      </c:forEach>
-    </div>
+      </c:when>
+      <c:otherwise>
+        <!-- Property Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <c:forEach var="property" items="${properties}" varStatus="status">
+            <div class="property-card rounded-3xl overflow-hidden group fade-in" style="animation-delay: ${status.index * 0.1}s">
+
+              <!-- Property Image -->
+              <div class="relative overflow-hidden h-64">
+                <img src="${pageContext.request.contextPath}/assets/properties/${property.propertyId}.jpg"
+                     alt="${property.title}"
+                     onerror="this.src='${pageContext.request.contextPath}/assets/properties/default.jpg'"
+                     class="property-image w-full h-full object-cover">
+
+                <!-- Status Badge -->
+                <div class="absolute top-4 left-4 z-20">
+                  <span class="px-4 py-2 rounded-full text-sm font-semibold text-white
+                    <c:choose>
+                      <c:when test='${property.status eq "Available"}'>status-available</c:when>
+                      <c:when test='${property.status eq "Booked"}'>status-booked</c:when>
+                      <c:otherwise>status-unavailable</c:otherwise>
+                    </c:choose>
+                  ">
+                    <i class="fas fa-circle mr-2"></i>${property.status}
+                  </span>
+                </div>
+
+                <!-- Property ID -->
+                <div class="absolute top-4 right-4 z-20">
+                  <span class="glass-effect px-3 py-1 rounded-full text-xs font-mono text-teal-400">
+                    #${property.propertyId}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Property Details -->
+              <div class="p-8 relative z-10">
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-teal-400 transition-colors duration-300">
+                    ${property.title}
+                </h3>
+
+                <div class="flex items-center text-slate-300 mb-2">
+                  <i class="fas fa-map-marker-alt text-teal-400 mr-3"></i>
+                  <span>${property.address}</span>
+                </div>
+
+                <div class="flex items-center text-slate-400 text-sm mb-6">
+                  <i class="fas fa-user text-teal-400 mr-3"></i>
+                  <span>Owned by: <strong class="text-white">${property.landlordName}</strong></span>
+                </div>
+
+                <!-- Price and Book Button -->
+                <div class="flex justify-between items-center mb-6">
+                  <div class="text-3xl font-black price-highlight">
+                    Rs. ${property.rent}<span class="text-sm text-slate-400 font-normal">/month</span>
+                  </div>
+
+                  <a href="${pageContext.request.contextPath}/book-property?id=${property.propertyId}"
+                     class="btn-primary text-white px-6 py-3 rounded-xl font-semibold book-now-btn flex items-center space-x-2 transform transition-all duration-300"
+                     data-status="${property.status}">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Book Now</span>
+                  </a>
+                </div>
+
+                <!-- Property Tags -->
+                <div class="flex flex-wrap gap-2">
+                  <span class="glass-effect px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fas fa-building mr-2 text-teal-400"></i>${property.type}
+                  </span>
+                  <span class="glass-effect px-4 py-2 rounded-full text-sm font-medium text-slate-300">
+                    <i class="fas fa-envelope mr-2 text-blue-400"></i>${property.landlordEmail}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </c:forEach>
+        </div>
+      </c:otherwise>
+    </c:choose>
   </div>
 </main>
 
 <!-- Footer -->
 <%@ include file="./partials/footer.jsp" %>
 
-<!-- Enhanced Booking Validation -->
+<!-- Enhanced JavaScript -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+    const statusInput = document.getElementById('statusInput');
+    const filterButtons = document.querySelectorAll('.filter-btn[data-status]');
+    const resetBtn = document.getElementById('resetBtn');
     const bookButtons = document.querySelectorAll(".book-now-btn");
+
+    // Debounce function for search
+    let searchTimeout;
+    function debounceSearch() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchForm.submit();
+      }, 500); // Wait 500ms after user stops typing
+    }
+
+    // Search input handler with debounce
+    searchInput.addEventListener('input', debounceSearch);
+
+    // Filter button handlers
+    filterButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Add active class to clicked button
+        button.classList.add('active');
+
+        // Update hidden status input
+        const status = button.getAttribute('data-status');
+        statusInput.value = status;
+
+        // Submit form
+        searchForm.submit();
+      });
+    });
+
+    // Reset button handler
+    resetBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = '${pageContext.request.contextPath}/properties';
+    });
 
     // Add scroll animations
     const observerOptions = {
@@ -343,7 +493,7 @@
           // Auto remove after 5 seconds
           setTimeout(() => {
             if (alertDiv.parentElement) {
-              alertDiv.style.transform = 'translateX(full)';
+              alertDiv.style.transform = 'translateX(400px)';
               setTimeout(() => alertDiv.remove(), 300);
             }
           }, 5000);

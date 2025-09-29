@@ -79,14 +79,69 @@ public class PropertyService {
         return properties;
     }
 
+    // NEW: Search and Filter Properties
+    public List<Property> searchAndFilterProperties(String searchTerm, String statusFilter) {
+        List<Property> properties = new ArrayList<>();
+        StringBuilder query = new StringBuilder(
+                "SELECT * FROM properties_view WHERE 1=1"
+        );
+
+        List<String> params = new ArrayList<>();
+
+        // Add search condition
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            query.append(" AND (LOWER(title) LIKE ? OR LOWER(address) LIKE ? OR " +
+                    "LOWER(landlord_name) LIKE ? OR LOWER(type) LIKE ?)");
+            String searchPattern = "%" + searchTerm.toLowerCase() + "%";
+            params.add(searchPattern);
+            params.add(searchPattern);
+            params.add(searchPattern);
+            params.add(searchPattern);
+        }
+
+        // Add status filter
+        if (statusFilter != null && !statusFilter.trim().isEmpty() && !"all".equalsIgnoreCase(statusFilter)) {
+            query.append(" AND status = ?");
+            params.add(statusFilter);
+        }
+
+        query.append(" ORDER BY property_id");
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query.toString())) {
+
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setString(i + 1, params.get(i));
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Property property = new Property();
+                property.setPropertyId(rs.getInt("property_id"));
+                property.setTitle(rs.getString("title"));
+                property.setAddress(rs.getString("address"));
+                property.setType(rs.getString("type"));
+                property.setRent(rs.getDouble("rent"));
+                property.setStatus(rs.getString("status"));
+                property.setLandlordName(rs.getString("landlord_name"));
+                property.setLandlordEmail(rs.getString("landlord_email"));
+                properties.add(property);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
+
     // Get Properties by Landlord ID (view)
     public List<Property> getPropertiesByLandlordId(int landlordId) {
         List<Property> properties = new ArrayList<>();
         String query = "SELECT p.*, a.full_name AS landlord_name, a.email AS landlord_email " +
-                       "FROM properties p " +
-                       "JOIN admins a ON p.landlord_id = a.admin_id " +
-                       "WHERE p.landlord_id = ? " +
-                       "ORDER BY p.property_id";
+                "FROM properties p " +
+                "JOIN admins a ON p.landlord_id = a.admin_id " +
+                "WHERE p.landlord_id = ? " +
+                "ORDER BY p.property_id";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, landlordId);

@@ -24,9 +24,22 @@ public class PropertyListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Fetch property list from service
-        List<Property> properties = propertyService.getAllProperties();
+        // Get search and filter parameters
+        String searchTerm = request.getParameter("search");
+        String statusFilter = request.getParameter("status");
+
+        // Fetch properties based on search/filter or get all
+        List<Property> properties;
+        if ((searchTerm != null && !searchTerm.trim().isEmpty()) ||
+                (statusFilter != null && !statusFilter.trim().isEmpty() && !"all".equalsIgnoreCase(statusFilter))) {
+            properties = propertyService.searchAndFilterProperties(searchTerm, statusFilter);
+        } else {
+            properties = propertyService.getAllProperties();
+        }
+
         request.setAttribute("properties", properties);
+        request.setAttribute("searchTerm", searchTerm != null ? searchTerm : "");
+        request.setAttribute("statusFilter", statusFilter != null ? statusFilter : "all");
 
         // Check login status and set session attributes
         HttpSession session = request.getSession(false);

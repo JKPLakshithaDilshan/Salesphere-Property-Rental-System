@@ -31,62 +31,71 @@
   <main class="flex-1 bg-slate-800 border border-slate-700 rounded-2xl shadow-lg p-8">
     <h1 class="text-3xl font-bold text-teal-400 mb-6">My Reviews</h1>
 
-    <c:if test="${not empty success}">
+    <!-- Success Messages -->
+    <c:if test="${param.success eq 'updated'}">
       <div class="mb-6 p-4 bg-green-900/30 text-green-300 border border-green-600 rounded">
-        <i class="fas fa-check-circle mr-2"></i> ${success}
+        <i class="fas fa-check-circle mr-2"></i> Review updated successfully!
       </div>
     </c:if>
 
-    <c:if test="${not empty error}">
-      <div class="mb-6 p-4 bg-red-900/30 text-red-300 border border-red-600 rounded">
-        <i class="fas fa-exclamation-circle mr-2"></i> ${error}
+    <c:if test="${param.success eq 'deleted'}">
+      <div class="mb-6 p-4 bg-green-900/30 text-green-300 border border-green-600 rounded">
+        <i class="fas fa-check-circle mr-2"></i> Review deleted successfully!
       </div>
     </c:if>
 
     <c:if test="${empty reviews}">
-      <p class="text-slate-300">You have not submitted any reviews yet.</p>
+      <div class="text-center py-12">
+        <i class="fas fa-star text-6xl text-slate-600 mb-4"></i>
+        <p class="text-slate-300 text-lg">You haven't submitted any reviews yet.</p>
+        <a href="${pageContext.request.contextPath}/my-bookings"
+           class="inline-block mt-4 px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition">
+          View My Bookings
+        </a>
+      </div>
     </c:if>
 
     <c:if test="${not empty reviews}">
-      <div class="overflow-x-auto border border-slate-700 rounded-lg">
-        <table class="min-w-full text-sm text-left text-slate-300">
-          <thead class="bg-slate-700 text-slate-400 uppercase text-xs">
-          <tr>
-            <th class="px-4 py-3">Review ID</th>
-            <th class="px-4 py-3">Property</th>
-            <th class="px-4 py-3">Rating</th>
-            <th class="px-4 py-3">Comment</th>
-            <th class="px-4 py-3">Reviewed At</th>
-            <th class="px-4 py-3">Actions</th>
-          </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-700">
-          <c:forEach var="review" items="${reviews}">
-            <tr class="hover:bg-slate-700/40 transition">
-              <td class="px-4 py-3">${review.reviewId}</td>
-              <td class="px-4 py-3">${review.propertyTitle}</td>
-              <td class="px-4 py-3">${review.rating} <i class="fas fa-star text-yellow-400"></i></td>
-              <td class="px-4 py-3">${review.comment}</td>
-              <td class="px-4 py-3">${review.reviewedAt}</td>
-              <td class="px-4 py-3 flex gap-2">
-                <a href="${pageContext.request.contextPath}/review?reviewId=${review.reviewId}&propertyId=${review.propertyId}"
-                   class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded bg-teal-500 hover:bg-teal-600 text-white transition">
+      <div class="grid gap-6">
+        <c:forEach var="review" items="${reviews}">
+          <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-6 hover:border-teal-500/50 transition">
+            <!-- Property Title -->
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-1">${review.propertyTitle}</h3>
+                <p class="text-sm text-slate-400">
+                  <i class="far fa-calendar mr-1"></i> ${review.reviewedAt}
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <a href="${pageContext.request.contextPath}/my-reviews?action=edit&id=${review.reviewId}"
+                   class="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg transition">
                   <i class="fas fa-edit mr-1"></i> Edit
                 </a>
-                <form action="${pageContext.request.contextPath}/reviews" method="post"
-                      onsubmit="return confirm('Are you sure you want to delete this review? This action cannot be undone.');">
-                  <input type="hidden" name="action" value="delete">
-                  <input type="hidden" name="reviewId" value="${review.reviewId}">
-                  <button type="submit"
-                          class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded bg-red-500 hover:bg-red-600 text-white transition">
-                    <i class="fas fa-trash-alt mr-1"></i> Delete
-                  </button>
-                </form>
-              </td>
-            </tr>
-          </c:forEach>
-          </tbody>
-        </table>
+                <a href="${pageContext.request.contextPath}/my-reviews?action=delete&id=${review.reviewId}"
+                   onclick="return confirm('Are you sure you want to delete this review?');"
+                   class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg transition">
+                  <i class="fas fa-trash mr-1"></i> Delete
+                </a>
+              </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="mb-3">
+              <div class="text-yellow-400 text-lg">
+                <c:forEach begin="1" end="${review.rating}">
+                  <i class="fas fa-star"></i>
+                </c:forEach>
+                <c:forEach begin="1" end="${5 - review.rating}">
+                  <i class="far fa-star"></i>
+                </c:forEach>
+              </div>
+            </div>
+
+            <!-- Comment -->
+            <p class="text-slate-300 leading-relaxed">${review.comment}</p>
+          </div>
+        </c:forEach>
       </div>
     </c:if>
   </main>

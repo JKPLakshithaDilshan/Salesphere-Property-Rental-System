@@ -27,7 +27,12 @@ public class ReviewService {
 
     // Get Review by ID
     public Review getReviewById(int reviewId) {
-        String query = "SELECT * FROM reviews WHERE review_id = ?";
+        String query = "SELECT r.*, " +
+                "COALESCE(rv.tenant_name, '') as tenant_name, " +
+                "COALESCE(rv.property_title, '') as property_title " +
+                "FROM reviews r " +
+                "LEFT JOIN reviews_view rv ON r.review_id = rv.review_id " +
+                "WHERE r.review_id = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, reviewId);
@@ -40,6 +45,8 @@ public class ReviewService {
                 review.setRating(rs.getInt("rating"));
                 review.setComment(rs.getString("comment"));
                 review.setReviewedAt(rs.getString("reviewed_at"));
+                review.setTenantName(rs.getString("tenant_name"));
+                review.setPropertyTitle(rs.getString("property_title"));
                 return review;
             }
         } catch (SQLException e) {
@@ -58,6 +65,8 @@ public class ReviewService {
             while (rs.next()) {
                 Review review = new Review();
                 review.setReviewId(rs.getInt("review_id"));
+                review.setPropertyId(rs.getInt("property_id"));
+                review.setTenantId(rs.getInt("tenant_id"));
                 review.setTenantName(rs.getString("tenant_name"));
                 review.setPropertyTitle(rs.getString("property_title"));
                 review.setRating(rs.getInt("rating"));
@@ -110,6 +119,8 @@ public class ReviewService {
             while (rs.next()) {
                 Review review = new Review();
                 review.setReviewId(rs.getInt("review_id"));
+                review.setPropertyId(rs.getInt("property_id"));
+                review.setTenantId(rs.getInt("tenant_id"));
                 review.setTenantName(rs.getString("tenant_name"));
                 review.setPropertyTitle(rs.getString("property_title"));
                 review.setRating(rs.getInt("rating"));
@@ -134,6 +145,8 @@ public class ReviewService {
             while (rs.next()) {
                 Review review = new Review();
                 review.setReviewId(rs.getInt("review_id"));
+                review.setPropertyId(rs.getInt("property_id"));
+                review.setTenantId(rs.getInt("tenant_id"));
                 review.setTenantName(rs.getString("tenant_name"));
                 review.setPropertyTitle(rs.getString("property_title"));
                 review.setRating(rs.getInt("rating"));

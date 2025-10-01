@@ -137,9 +137,12 @@ INSERT INTO PaymentCards (user_id, card_holder_name, card_number, expiry_date, c
 -- ==============================
 -- VIEW: bookings_view
 -- ==============================
-CREATE OR REPLACE VIEW bookings_view AS
+DROP VIEW IF EXISTS bookings_view;
+CREATE VIEW bookings_view AS
 SELECT 
     b.booking_id,
+    b.tenant_id,
+    b.property_id,
     u.full_name AS tenant_name,
     p.title AS property_title,
     b.booking_date,
@@ -149,11 +152,14 @@ JOIN users u ON b.tenant_id = u.user_id
 JOIN properties p ON b.property_id = p.property_id;
 
 -- ==============================
--- VIEW: reviews_view
+-- VIEW: reviews_view (FIXED - Added property_id and tenant_id)
 -- ==============================
-CREATE OR REPLACE VIEW reviews_view AS
+DROP VIEW IF EXISTS reviews_view;
+CREATE VIEW reviews_view AS
 SELECT 
     r.review_id,
+    r.property_id,
+    r.tenant_id,
     u.full_name AS tenant_name,
     p.title AS property_title,
     r.rating,
@@ -161,12 +167,14 @@ SELECT
     r.reviewed_at
 FROM reviews r
 JOIN users u ON r.tenant_id = u.user_id
-JOIN properties p ON r.property_id = p.property_id;
+JOIN properties p ON r.property_id = p.property_id
+ORDER BY r.reviewed_at DESC;
 
 -- ==============================
 -- VIEW: properties_view
 -- ==============================
-CREATE OR REPLACE VIEW properties_view AS
+DROP VIEW IF EXISTS properties_view;
+CREATE VIEW properties_view AS
 SELECT 
     p.property_id,
     p.title,

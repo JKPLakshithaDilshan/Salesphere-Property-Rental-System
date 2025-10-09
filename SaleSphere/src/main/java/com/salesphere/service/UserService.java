@@ -1,12 +1,12 @@
 package com.salesphere.service;
 
 import com.salesphere.model.Buyer;
-import com.salesphere.model.User;
 import com.salesphere.util.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserService {
 
@@ -15,9 +15,10 @@ public class UserService {
         String query = "INSERT INTO users (full_name, email, password, phone, nic_number, address) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
             stmt.setString(1, user.getFullName());
             stmt.setString(2, user.getEmail());
-            stmt.setString(3, user.getPassword());
+            stmt.setString(3, hashedPassword);
             stmt.setString(4, user.getPhone());
             stmt.setString(5, user.getNicNumber());
             stmt.setString(6, user.getAddress());
@@ -40,7 +41,7 @@ public class UserService {
                 user.setUserId(rs.getInt("user_id"));
                 user.setFullName(rs.getString("full_name"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                user.setPassword(rs.getString("password")); // Hashed password
                 user.setPhone(rs.getString("phone"));
                 user.setNicNumber(rs.getString("nic_number"));
                 user.setAddress(rs.getString("address"));
@@ -65,7 +66,7 @@ public class UserService {
                 user.setUserId(rs.getInt("user_id"));
                 user.setFullName(rs.getString("full_name"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                user.setPassword(rs.getString("password")); // Hashed password
                 user.setPhone(rs.getString("phone"));
                 user.setNicNumber(rs.getString("nic_number"));
                 user.setAddress(rs.getString("address"));
@@ -83,9 +84,10 @@ public class UserService {
         String query = "UPDATE users SET full_name = ?, email = ?, password = ?, phone = ?, nic_number = ?, address = ? WHERE user_id = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
             stmt.setString(1, user.getFullName());
             stmt.setString(2, user.getEmail());
-            stmt.setString(3, user.getPassword());
+            stmt.setString(3, hashedPassword);
             stmt.setString(4, user.getPhone());
             stmt.setString(5, user.getNicNumber());
             stmt.setString(6, user.getAddress());
@@ -122,7 +124,7 @@ public class UserService {
                 user.setUserId(rs.getInt("user_id"));
                 user.setFullName(rs.getString("full_name"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                user.setPassword(rs.getString("password")); // Hashed password
                 user.setPhone(rs.getString("phone"));
                 user.setNicNumber(rs.getString("nic_number"));
                 user.setAddress(rs.getString("address"));
@@ -133,5 +135,14 @@ public class UserService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    // Verify Password
+    public boolean verifyPassword(String email, String password) {
+        Buyer user = getUserByEmail(email);
+        if (user != null) {
+            return BCrypt.checkpw(password, user.getPassword());
+        }
+        return false;
     }
 }

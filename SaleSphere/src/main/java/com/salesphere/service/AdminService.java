@@ -13,13 +13,28 @@ public class AdminService {
     public boolean createAdmin(Admin admin) {
         String query = "INSERT INTO admins (full_name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, admin.getFullName());
             stmt.setString(2, admin.getEmail());
             stmt.setString(3, admin.getPassword());
             stmt.setString(4, admin.getPhone());
             stmt.setString(5, admin.getRole());
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            if (ok && "Landlord".equalsIgnoreCase(admin.getRole())) {
+                ResultSet keys = stmt.getGeneratedKeys();
+                if (keys.next()) {
+                    int newAdminId = keys.getInt(1);
+                    try (PreparedStatement sellerStmt = connection.prepareStatement(
+                            "INSERT INTO sellers (admin_id, full_name, email, phone) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE full_name=VALUES(full_name), email=VALUES(email), phone=VALUES(phone)")) {
+                        sellerStmt.setInt(1, newAdminId);
+                        sellerStmt.setString(2, admin.getFullName());
+                        sellerStmt.setString(3, admin.getEmail());
+                        sellerStmt.setString(4, admin.getPhone());
+                        sellerStmt.executeUpdate();
+                    }
+                }
+            }
+            return ok;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,7 +100,26 @@ public class AdminService {
             stmt.setString(4, admin.getPhone());
             stmt.setString(5, admin.getRole());
             stmt.setInt(6, admin.getAdminId());
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            if (ok) {
+                if ("Landlord".equalsIgnoreCase(admin.getRole())) {
+                    try (PreparedStatement sellerStmt = connection.prepareStatement(
+                            "INSERT INTO sellers (admin_id, full_name, email, phone) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE full_name=VALUES(full_name), email=VALUES(email), phone=VALUES(phone)")) {
+                        sellerStmt.setInt(1, admin.getAdminId());
+                        sellerStmt.setString(2, admin.getFullName());
+                        sellerStmt.setString(3, admin.getEmail());
+                        sellerStmt.setString(4, admin.getPhone());
+                        sellerStmt.executeUpdate();
+                    }
+                } else if ("Admin".equalsIgnoreCase(admin.getRole())) {
+                    try (PreparedStatement deleteSeller = connection.prepareStatement(
+                            "DELETE FROM sellers WHERE admin_id = ?")) {
+                        deleteSeller.setInt(1, admin.getAdminId());
+                        deleteSeller.executeUpdate();
+                    }
+                }
+            }
+            return ok;
         } catch (SQLException e) {
             e.printStackTrace();
         }

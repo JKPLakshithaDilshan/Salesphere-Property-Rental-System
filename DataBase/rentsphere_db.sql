@@ -37,6 +37,26 @@ CREATE TABLE admins (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ==============================
+-- Table: sellers (linked to admins)
+-- ==============================
+CREATE TABLE IF NOT EXISTS sellers (
+    seller_id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT UNIQUE NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(15),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES admins(admin_id) ON DELETE CASCADE
+);
+
+-- Backfill sellers from admins where role='Landlord'
+INSERT INTO sellers (admin_id, full_name, email, phone)
+SELECT a.admin_id, a.full_name, a.email, a.phone
+FROM admins a
+WHERE a.role = 'Landlord'
+ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), email = VALUES(email), phone = VALUES(phone);
+
 -- Sample Admins
 INSERT INTO admins (full_name, email, password, phone, role) VALUES
 ('Lakshan Fernando', 'lakshan@example.com', 'adminpass1', '0761122334', 'Admin'),
@@ -56,17 +76,23 @@ CREATE TABLE properties (
     rent DECIMAL(10,2) NOT NULL,
     status ENUM('Available', 'Rented', 'Inactive') DEFAULT 'Available',
     description TEXT,
+    main_image VARCHAR(255),
+    image1 VARCHAR(255),
+    image2 VARCHAR(255),
+    image3 VARCHAR(255),
+    image4 VARCHAR(255),
+    image5 VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (landlord_id) REFERENCES admins(admin_id) ON DELETE CASCADE
 );
 
--- Sample Properties
-INSERT INTO properties (landlord_id, title, address, type, rent, status, description) VALUES
-(2, 'Luxury Apartment in Colombo 7', 'No. 12, Rosmead Place, Colombo 7', 'Apartment', 75000.00, 'Available', 'Modern 2-bedroom apartment with balcony.'),
-(2, 'Budget Room in Galle', '45A, Light House Street, Galle', 'Room', 18000.00, 'Available', 'Affordable single room near town.'),
-(3, 'Family House in Kandy', '123, Hill Street, Kandy', 'House', 65000.00, 'Rented', 'Spacious family house with garden and garage.'),
-(3, 'Studio Apartment in Negombo', '8C, Beach Road, Negombo', 'Apartment', 32000.00, 'Available', 'Ideal for a couple, walking distance to beach.'),
-(2, 'Single Room in Matara', '22, Weligama Road, Matara', 'Room', 15000.00, 'Available', 'Furnished single room in a quiet neighborhood.');
+-- Sample Properties with images
+INSERT INTO properties (landlord_id, title, address, type, rent, status, description, main_image, image1, image2, image3, image4, image5) VALUES
+(2, 'Luxury Apartment in Colombo 7', 'No. 12, Rosmead Place, Colombo 7', 'Apartment', 75000.00, 'Available', 'Modern 2-bedroom apartment with balcony.', '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg'),
+(2, 'Budget Room in Galle', '45A, Light House Street, Galle', 'Room', 18000.00, 'Available', 'Affordable single room near town.', '7.jpg', '8.jpg', '9.jpg', NULL, NULL, NULL),
+(3, 'Family House in Kandy', '123, Hill Street, Kandy', 'House', 65000.00, 'Rented', 'Spacious family house with garden and garage.', '1.jpg', '2.jpg', '3.jpg', '4.jpg', NULL, NULL),
+(3, 'Studio Apartment in Negombo', '8C, Beach Road, Negombo', 'Apartment', 32000.00, 'Available', 'Ideal for a couple, walking distance to beach.', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', NULL),
+(2, 'Single Room in Matara', '22, Weligama Road, Matara', 'Room', 15000.00, 'Available', 'Furnished single room in a quiet neighborhood.', '1.jpg', '2.jpg', NULL, NULL, NULL, NULL);
 
 -- ==============================
 -- Table: bookings
@@ -182,7 +208,8 @@ SELECT
     p.type,
     p.rent,
     p.status,
-    a.full_name AS landlord_name,
-    a.email AS landlord_email
+    COALESCE(s.full_name, a.full_name) AS landlord_name,
+    COALESCE(s.email, a.email) AS landlord_email
 FROM properties p
-JOIN admins a ON p.landlord_id = a.admin_id;
+JOIN admins a ON p.landlord_id = a.admin_id
+LEFT JOIN sellers s ON s.admin_id = a.admin_id;

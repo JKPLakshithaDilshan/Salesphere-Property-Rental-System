@@ -78,15 +78,69 @@
             </select>
           </div>
 
-          <!-- Image -->
+          <!-- Main Image -->
           <div>
-            <label class="block text-sm mb-1" for="property_image">Property Image</label>
-            <input type="file" id="property_image" name="property_image" accept="image/*"
+            <label class="block text-sm mb-1" for="main_image">Main Image</label>
+            <input type="file" id="main_image" name="main_image" accept="image/*"
                    class="w-full text-sm text-gray-300 file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
-            <c:if test="${not empty property.propertyId}">
-              <img src="${pageContext.request.contextPath}/assets/properties/${property.propertyId}.jpg"
-                   alt="Property Image" class="mt-3 w-40 rounded-lg border border-slate-600" />
+            <c:if test="${not empty property.mainImage}">
+              <img src="${pageContext.request.contextPath}/assets/properties/${property.mainImage}"
+                   alt="Main Image" class="mt-3 w-40 rounded-lg border border-slate-600" />
             </c:if>
+            <p class="text-xs text-gray-400 mt-1">Upload a new main image to replace the current one</p>
+          </div>
+
+          <!-- Additional Images -->
+          <div class="md:col-span-2">
+            <label class="block text-sm mb-1">Additional Images (up to 5)</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <input type="file" name="image1" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <c:if test="${not empty property.image1}">
+                  <img src="${pageContext.request.contextPath}/assets/properties/${property.image1}"
+                       alt="Image 1" class="mt-2 w-32 rounded-lg border border-slate-600" />
+                </c:if>
+                <p class="text-xs text-gray-400 mt-1">Image 1</p>
+              </div>
+              <div>
+                <input type="file" name="image2" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <c:if test="${not empty property.image2}">
+                  <img src="${pageContext.request.contextPath}/assets/properties/${property.image2}"
+                       alt="Image 2" class="mt-2 w-32 rounded-lg border border-slate-600" />
+                </c:if>
+                <p class="text-xs text-gray-400 mt-1">Image 2</p>
+              </div>
+              <div>
+                <input type="file" name="image3" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <c:if test="${not empty property.image3}">
+                  <img src="${pageContext.request.contextPath}/assets/properties/${property.image3}"
+                       alt="Image 3" class="mt-2 w-32 rounded-lg border border-slate-600" />
+                </c:if>
+                <p class="text-xs text-gray-400 mt-1">Image 3</p>
+              </div>
+              <div>
+                <input type="file" name="image4" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <c:if test="${not empty property.image4}">
+                  <img src="${pageContext.request.contextPath}/assets/properties/${property.image4}"
+                       alt="Image 4" class="mt-2 w-32 rounded-lg border border-slate-600" />
+                </c:if>
+                <p class="text-xs text-gray-400 mt-1">Image 4</p>
+              </div>
+              <div>
+                <input type="file" name="image5" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <c:if test="${not empty property.image5}">
+                  <img src="${pageContext.request.contextPath}/assets/properties/${property.image5}"
+                       alt="Image 5" class="mt-2 w-32 rounded-lg border border-slate-600" />
+                </c:if>
+                <p class="text-xs text-gray-400 mt-1">Image 5</p>
+              </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Upload new images to replace existing ones. Leave empty to keep current images.</p>
           </div>
 
           <!-- Description -->

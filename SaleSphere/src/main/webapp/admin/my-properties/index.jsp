@@ -48,8 +48,9 @@
                             <c:forEach var="property" items="${properties}">
                                 <tr class="hover:bg-slate-700/40 transition">
                                     <td class="px-6 py-4">
-                                        <img src="${pageContext.request.contextPath}/assets/properties/${property.propertyId}.jpg"
-                                             alt="Property Image" class="w-20 h-14 object-cover rounded" onerror="this.src='${pageContext.request.contextPath}/assets/no-image.jpg'" />
+                                        <img src="${pageContext.request.contextPath}/assets/properties/${not empty property.mainImage ? property.mainImage : 'default.jpg'}"
+                                             alt="Property Image" class="w-20 h-14 object-cover rounded"
+                                             onerror="this.src='${pageContext.request.contextPath}/assets/properties/default.jpg'" />
                                     </td>
                                     <td class="px-6 py-4 font-medium text-white">${property.title}</td>
                                     <td class="px-6 py-4">${property.address}</td>

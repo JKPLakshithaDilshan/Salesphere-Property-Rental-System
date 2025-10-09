@@ -81,11 +81,45 @@
             </select>
           </div>
 
-          <!-- Image -->
+          <!-- Main Image -->
           <div>
-            <label class="block text-sm mb-1" for="property_image">Image</label>
-            <input type="file" id="property_image" name="property_image" accept="image/*"
+            <label class="block text-sm mb-1" for="main_image">Main Image</label>
+            <input type="file" id="main_image" name="main_image" accept="image/*" required
                    class="w-full text-sm text-gray-300 file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+            <p class="text-xs text-gray-400 mt-1">This will be the primary image shown in listings</p>
+          </div>
+
+          <!-- Additional Images -->
+          <div class="md:col-span-2">
+            <label class="block text-sm mb-1">Additional Images (up to 5)</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <input type="file" name="image1" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <p class="text-xs text-gray-400 mt-1">Image 1</p>
+              </div>
+              <div>
+                <input type="file" name="image2" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <p class="text-xs text-gray-400 mt-1">Image 2</p>
+              </div>
+              <div>
+                <input type="file" name="image3" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <p class="text-xs text-gray-400 mt-1">Image 3</p>
+              </div>
+              <div>
+                <input type="file" name="image4" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <p class="text-xs text-gray-400 mt-1">Image 4</p>
+              </div>
+              <div>
+                <input type="file" name="image5" accept="image/*"
+                       class="w-full text-sm text-gray-300 file:bg-green-600 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 file:cursor-pointer" />
+                <p class="text-xs text-gray-400 mt-1">Image 5</p>
+              </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">These additional images will be shown in the property gallery</p>
           </div>
 
           <!-- Description -->

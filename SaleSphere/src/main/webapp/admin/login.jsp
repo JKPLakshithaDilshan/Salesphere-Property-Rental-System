@@ -18,8 +18,8 @@
         <!-- Logo + Title -->
         <div class="text-center">
             <i class="fas fa-building text-blue-400 text-4xl mb-2"></i>
-            <h1 class="text-2xl font-bold text-blue-400">RentSphere</h1>
-            <p class="text-sm text-gray-400 mt-1">Admin Login</p>
+            <h1 class="text-2xl font-bold text-blue-400">SaleSphere</h1>
+            <p class="text-sm text-gray-400 mt-1">Admin & Seller Login</p>
         </div>
 
         <!-- Error Message -->
@@ -35,7 +35,7 @@
             <div>
                 <label class="block text-sm mb-1" for="email">Email</label>
                 <input type="email" id="email" name="email" required
-                       placeholder="admin@example.com"
+                       placeholder="lakshitha@example.com"
                        class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
@@ -59,7 +59,7 @@
 
         <!-- Footer -->
         <div class="text-center text-xs text-gray-500 pt-4 border-t border-slate-700">
-            &copy; 2024 RentSphere Admin Panel. All rights reserved.
+            &copy; 2025 SaleSphere Admin Panel. All rights reserved.
         </div>
     </div>
 

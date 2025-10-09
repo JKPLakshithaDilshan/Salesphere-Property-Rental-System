@@ -350,7 +350,7 @@
     <nav class="nav-container flex-1 overflow-y-auto">
         <div class="space-y-1">
             <!-- Dashboard -->
-            <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link" data-section="dashboard">
+            <a href="${pageContext.request.contextPath}/admin/my-property" class="nav-link" data-section="dashboard">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <span class="nav-text">Dashboard</span>
             </a>
@@ -363,32 +363,32 @@
             </a>
 
             <!-- Tenants -->
-            <a href="${pageContext.request.contextPath}/admin/tenants" class="nav-link" data-section="tenants">
+            <a href="${pageContext.request.contextPath}/admin/my-property" class="nav-link" data-section="tenants">
                 <i class="nav-icon fas fa-users"></i>
                 <span class="nav-text">Tenants</span>
             </a>
 
             <!-- Maintenance -->
-            <a href="${pageContext.request.contextPath}/admin/maintenance" class="nav-link" data-section="maintenance">
+            <a href="${pageContext.request.contextPath}/admin/my-property" class="nav-link" data-section="maintenance">
                 <i class="nav-icon fas fa-tools"></i>
                 <span class="nav-text">Maintenance</span>
                 <span class="nav-badge" style="display: none;">3</span>
             </a>
 
             <!-- Payments -->
-            <a href="${pageContext.request.contextPath}/admin/payments" class="nav-link" data-section="payments">
+            <a href="${pageContext.request.contextPath}/admin/my-property" class="nav-link" data-section="payments">
                 <i class="nav-icon fas fa-credit-card"></i>
                 <span class="nav-text">Payments</span>
             </a>
 
             <!-- Reports -->
-            <a href="${pageContext.request.contextPath}/admin/reports" class="nav-link" data-section="reports">
+            <a href="${pageContext.request.contextPath}/admin/my-property" class="nav-link" data-section="reports">
                 <i class="nav-icon fas fa-chart-line"></i>
                 <span class="nav-text">Reports</span>
             </a>
 
             <!-- Settings -->
-            <a href="${pageContext.request.contextPath}/admin/settings" class="nav-link" data-section="settings">
+            <a href="${pageContext.request.contextPath}/admin/my-property" class="nav-link" data-section="settings">
                 <i class="nav-icon fas fa-cog"></i>
                 <span class="nav-text">Settings</span>
             </a>

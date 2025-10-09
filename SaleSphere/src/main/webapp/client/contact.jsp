@@ -309,12 +309,6 @@
         </div>
 
         <!-- Animated CTA Button -->
-        <div class="mt-12" style="animation: fadeInUp 1s ease-out 0.6s both;">
-          <button onclick="scrollToContact()" class="magnetic-btn ripple bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-teal-500/25 transform hover:scale-105 transition-all duration-300">
-            <i class="fas fa-rocket mr-2"></i>
-            Get In Touch
-          </button>
-        </div>
       </div>
     </section>
 
@@ -413,142 +407,7 @@
                   <div>
                     <span class="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">Customer Support</span>
                     <p class="text-gray-400 text-sm">Live chat & phone support</p>
-                  </div><%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-                  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-                  <!DOCTYPE html>
-                  <html lang="en" class="dark">
-                  <head>
-                    <meta charset="UTF-8" />
-                    <title>About Us - SaleSphere</title>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-                    <link href="./css/output.css" rel="stylesheet" />
-                  </head>
-                  <body class="bg-slate-900 text-gray-100 font-sans">
-
-                  <!-- Header -->
-                  <c:choose>
-                    <c:when test="${isLoggedIn}">
-                      <jsp:include page="./partials/sessionheader.jsp" />
-                    </c:when>
-                    <c:otherwise>
-                      <jsp:include page="./partials/header.jsp" />
-                    </c:otherwise>
-                  </c:choose>
-
-                  <!-- Main Content -->
-                  <main class="bg-slate-900 overflow-x-hidden">
-
-                    <!-- Animated Background Particles -->
-                    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
-
-                    <!-- Hero Section -->
-                    <section class="relative py-32 gradient-bg overflow-hidden">
-                      <div class="container mx-auto px-6 relative z-10 text-center">
-                        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 text-white leading-tight animate-fade-in">
-                          Empowering Your Property Journey
-                        </h1>
-                        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-10 animate-fade-in-delay">
-                          At SaleSphere, we simplify property sales and rentals with cutting-edge technology,
-                          connecting buyers, sellers, and renters seamlessly.
-                        </p>
-
-                        <!-- ✅ Fixed: Centered Button -->
-                        <div class="mt-10 flex justify-center">
-                          <a href="contact.jsp"
-                             class="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-lg shadow-lg transform hover:scale-105 transition duration-300">
-                            Get In Touch
-                          </a>
-                        </div>
-                      </div>
-                      <div class="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent"></div>
-                    </section>
-
-                    <!-- History Section -->
-                    <section class="py-24 bg-slate-900 relative">
-                      <div class="container mx-auto px-6">
-                        <div class="grid md:grid-cols-2 gap-16 items-center">
-                          <div class="relative">
-                            <img src="./img/history.jpg"
-                                 alt="Our History"
-                                 class="rounded-2xl shadow-2xl transform hover:scale-105 transition duration-500" />
-                          </div>
-                          <div>
-                            <h2 class="text-4xl font-bold text-white mb-6">Our Story</h2>
-                            <p class="text-lg text-gray-300 mb-6 leading-relaxed">
-                              Founded in 2020, SaleSphere emerged with a vision to revolutionize the real estate industry.
-                              Our platform bridges the gap between traditional property sales and modern technology,
-                              making real estate transactions transparent, efficient, and user-friendly.
-                            </p>
-                            <p class="text-lg text-gray-300 leading-relaxed">
-                              Today, we proudly serve thousands of customers, helping them buy, sell, and rent properties with confidence.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-
-                    <!-- Values Section -->
-                    <section class="py-24 gradient-bg relative overflow-hidden">
-                      <div class="container mx-auto px-6 text-center">
-                        <h2 class="text-4xl font-bold text-white mb-16">Our Core Values</h2>
-                        <div class="grid md:grid-cols-3 gap-12">
-
-                          <!-- Value 1 -->
-                          <div class="bg-slate-800/60 backdrop-blur-lg p-10 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2">
-                            <i class="fas fa-handshake text-5xl text-blue-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-white">Integrity</h3>
-                            <p class="text-gray-400 leading-relaxed">
-                              We prioritize honesty and transparency, ensuring trust in every transaction.
-                            </p>
-                          </div>
-
-                          <!-- Value 2 -->
-                          <div class="bg-slate-800/60 backdrop-blur-lg p-10 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2">
-                            <i class="fas fa-lightbulb text-5xl text-blue-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-white">Innovation</h3>
-                            <p class="text-gray-400 leading-relaxed">
-                              Leveraging the latest technology, we deliver smarter, faster, and simpler property solutions.
-                            </p>
-                          </div>
-
-                          <!-- Value 3 -->
-                          <div class="bg-slate-800/60 backdrop-blur-lg p-10 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2">
-                            <i class="fas fa-users text-5xl text-blue-500 mb-6"></i>
-                            <h3 class="text-2xl font-semibold mb-4 text-white">Customer Focus</h3>
-                            <p class="text-gray-400 leading-relaxed">
-                              Your needs are at the heart of what we do. We’re committed to providing exceptional experiences.
-                            </p>
-                          </div>
-
-                        </div>
-                      </div>
-                    </section>
-
-                  </main>
-
-                  <!-- Footer -->
-                  <%@ include file="./partials/footer.jsp" %>
-
-                  <!-- Scripts -->
-                  <script>
-                    // Particle animation
-                    const particlesContainer = document.getElementById("particles-container");
-                    for (let i = 0; i < 60; i++) {
-                      const particle = document.createElement("div");
-                      particle.className = "particle";
-                      particle.style.left = Math.random() * 100 + "vw";
-                      particle.style.top = Math.random() * 100 + "vh";
-                      particle.style.width = particle.style.height = Math.random() * 4 + "px";
-                      particle.style.background = "rgba(59,130,246,0.6)";
-                      particle.style.position = "absolute";
-                      particle.style.borderRadius = "50%";
-                      particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
-                      particlesContainer.appendChild(particle);
-                    }
-                  </script>
-                  </body>
-                  </html>
+                  </div>
 
                 </div>
                 <div class="text-right">
@@ -642,18 +501,6 @@
                 onerror="console.log('Map fallback active');">
               </iframe>
             </div>
-          </div>
-
-          <div class="mt-8 text-center">
-            <a href="https://www.openstreetmap.org/?mlat=6.922&mlon=79.856#map=17/6.922/79.856"
-               target="_blank"
-               class="magnetic-btn ripple inline-flex items-center space-x-2 text-teal-400 hover:text-white bg-transparent hover:bg-teal-500 border-2 border-teal-400 hover:border-teal-500 font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
-              <i class="fas fa-external-link-alt"></i>
-              <span>View Larger Map</span>
-            </a>
-            <p class="mt-4 text-gray-300 text-lg">
-              Conveniently located in central Colombo near all major transport lines.
-            </p>
           </div>
         </div>
       </div>

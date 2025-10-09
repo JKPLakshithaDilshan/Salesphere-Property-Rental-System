@@ -307,11 +307,12 @@
         <!-- Property Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <c:forEach var="property" items="${properties}" varStatus="status">
-            <div class="property-card rounded-3xl overflow-hidden group fade-in" style="animation-delay: ${status.index * 0.1}s">
+            <div class="property-card rounded-3xl overflow-hidden group fade-in cursor-pointer" style="animation-delay: ${status.index * 0.1}s" 
+                 onclick="window.location.href='${pageContext.request.contextPath}/property-detail?id=${property.propertyId}'">
 
               <!-- Property Image -->
               <div class="relative overflow-hidden h-64">
-                <img src="${pageContext.request.contextPath}/assets/properties/${property.propertyId}.jpg"
+                <img src="${pageContext.request.contextPath}/assets/properties/${not empty property.mainImage ? property.mainImage : 'default.jpg'}"
                      alt="${property.title}"
                      onerror="this.src='${pageContext.request.contextPath}/assets/properties/default.jpg'"
                      class="property-image w-full h-full object-cover">
@@ -335,6 +336,15 @@
                     #${property.propertyId}
                   </span>
                 </div>
+
+                <!-- View Details Overlay -->
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span class="bg-white text-gray-900 px-6 py-3 rounded-full font-semibold text-lg">
+                      <i class="fas fa-eye mr-2"></i>View Details
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <!-- Property Details -->
@@ -353,18 +363,26 @@
                   <span>Owned by: <strong class="text-white">${property.landlordName}</strong></span>
                 </div>
 
-                <!-- Price and Book Button -->
+                <!-- Price and Action Buttons -->
                 <div class="flex justify-between items-center mb-6">
                   <div class="text-3xl font-black price-highlight">
                     Rs. ${property.rent}<span class="text-sm text-slate-400 font-normal">/month</span>
                   </div>
 
-                  <a href="${pageContext.request.contextPath}/book-property?id=${property.propertyId}"
-                     class="btn-primary text-white px-6 py-3 rounded-xl font-semibold book-now-btn flex items-center space-x-2 transform transition-all duration-300"
-                     data-status="${property.status}">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Book Now</span>
-                  </a>
+                  <div class="flex gap-2">
+                    <a href="${pageContext.request.contextPath}/property-detail?id=${property.propertyId}"
+                       class="glass-effect text-white px-4 py-3 rounded-xl font-semibold hover:bg-teal-500/20 transition-all duration-300"
+                       onclick="event.stopPropagation();">
+                      <i class="fas fa-eye mr-2"></i>View
+                    </a>
+                    <a href="${pageContext.request.contextPath}/book-property?id=${property.propertyId}"
+                       class="btn-primary text-white px-4 py-3 rounded-xl font-semibold book-now-btn flex items-center space-x-2 transform transition-all duration-300"
+                       data-status="${property.status}"
+                       onclick="event.stopPropagation();">
+                      <i class="fas fa-calendar-check"></i>
+                      <span>Book</span>
+                    </a>
+                  </div>
                 </div>
 
                 <!-- Property Tags -->

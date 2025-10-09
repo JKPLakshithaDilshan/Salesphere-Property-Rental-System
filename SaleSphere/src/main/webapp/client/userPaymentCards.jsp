@@ -38,7 +38,7 @@
                         <p>Card Holder</p>
                         <p class="font-semibold"><%= card.getCard_holder_name() %></p>
                     </div>
-                    <div class="flex justify-between text-sm">
+                    <div class="flex justify-between text-sm mb-4">
                         <div>
                             <p>Expiry</p>
                             <p class="font-semibold"><%= card.getExpiry_date() %></p>
@@ -49,18 +49,24 @@
                         </div>
                     </div>
 
-                    <div class="mt-4 grid grid-cols-2 gap-2">
+                    <!-- Pay with This Card Button -->
+                    <a href="${pageContext.request.contextPath}/client/PaymentConfirmation.jsp?cardId=<%= card.getCard_id() %>"
+                       class="block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl text-center mb-2 transition">
+                        💳 Pay with This Card
+                    </a>
+
+                    <div class="grid grid-cols-2 gap-2">
                         <a href="paymentcard?action=edit&id=<%= card.getCard_id() %>"
                            class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-xl text-center block transition">
                             ✏️ Edit
                         </a>
-                        <form action="paymentcard" method="post">
+                        <form action="paymentcard" method="post" class="m-0">
                             <input type="hidden" name="action" value="delete" />
                             <input type="hidden" name="card_id" value="<%= card.getCard_id() %>" />
                             <button type="submit"
                                     onclick="return confirm('Are you sure you want to delete this card?');"
                                     class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl transition">
-                                🗑 Delete
+                                🗑️ Delete
                             </button>
                         </form>
                     </div>
@@ -73,28 +79,11 @@
             <% } %>
         </div>
 
-        <div class="mt-12 text-center space-y-4">
+        <div class="mt-12 text-center">
             <a href="${pageContext.request.contextPath}/paymentcard?action=create"
                class="btn btn-primary">
                 ➕ Add New Card
             </a>
-
-            <% if (cards != null && !cards.isEmpty()) { %>
-            <div>
-                <a href="${pageContext.request.contextPath}/client/PaymentSuccessful.jsp"
-                   class="btn btn-success">
-                    💳 Pay Now
-                </a>
-s
-            </div>
-            <% } else { %>
-            <div>
-                <button class="btn btn-success opacity-50 cursor-not-allowed" disabled>
-                    💳 Pay Now
-                </button>
-                <p class="text-sm text-gray-500 mt-2">Add a card to enable payments</p>
-            </div>
-            <% } %>
         </div>
     </div>
 </section>

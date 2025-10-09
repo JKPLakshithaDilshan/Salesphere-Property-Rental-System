@@ -108,18 +108,46 @@ public class MyPropertyServlet extends HttpServlet {
                 property.setStatus(request.getParameter("status"));
                 property.setDescription(request.getParameter("description"));
 
-                if (propertyService.createProperty(property)) {
-                    int newId = propertyService.getPropertiesByLandlordId(landlordId)
-                            .stream().filter(p -> p.getTitle().equals(property.getTitle()))
-                            .findFirst().get().getPropertyId();
+                int newId = propertyService.createPropertyReturningId(property);
+                if (newId > 0) {
+                    property.setPropertyId(newId);
 
-                    Part imagePart = request.getPart("property_image");
-                    if (imagePart != null && imagePart.getSize() > 0) {
                         String uploadPath = getServletContext().getRealPath("/") + "assets/properties/";
                         File dir = new File(uploadPath);
                         if (!dir.exists()) dir.mkdirs();
-                        imagePart.write(uploadPath + File.separator + newId + ".jpg");
+
+                    // Handle main image (fallback to default.jpg if none)
+                    Part mainImagePart = request.getPart("main_image");
+                    if (mainImagePart != null && mainImagePart.getSize() > 0) {
+                        String mainImageFileName = "main_" + newId + "_" + System.currentTimeMillis() + ".jpg";
+                        mainImagePart.write(uploadPath + File.separator + mainImageFileName);
+                        property.setMainImage(mainImageFileName);
+                    } else {
+                        property.setMainImage("default.jpg");
                     }
+
+                    // Handle additional images
+                    String[] imageNames = {"image1", "image2", "image3", "image4", "image5"};
+                    String[] imageFields = {"image1", "image2", "image3", "image4", "image5"};
+                    
+                    for (int i = 0; i < imageNames.length; i++) {
+                        Part imagePart = request.getPart(imageNames[i]);
+                        if (imagePart != null && imagePart.getSize() > 0) {
+                            String imageFileName = "img" + (i+1) + "_" + newId + "_" + System.currentTimeMillis() + ".jpg";
+                            imagePart.write(uploadPath + File.separator + imageFileName);
+                            
+                            switch (i) {
+                                case 0: property.setImage1(imageFileName); break;
+                                case 1: property.setImage2(imageFileName); break;
+                                case 2: property.setImage3(imageFileName); break;
+                                case 3: property.setImage4(imageFileName); break;
+                                case 4: property.setImage5(imageFileName); break;
+                            }
+                        }
+                    }
+
+                    // Update property with image information
+                    propertyService.updatePropertyWithImages(property);
 
                     response.sendRedirect(request.getContextPath() + "/admin/my-property");
                 } else {
@@ -141,15 +169,40 @@ public class MyPropertyServlet extends HttpServlet {
                 existing.setStatus(request.getParameter("status"));
                 existing.setDescription(request.getParameter("description"));
 
-                if (propertyService.updateProperty(existing)) {
-                    Part imagePart = request.getPart("property_image");
-                    if (imagePart != null && imagePart.getSize() > 0) {
                         String uploadPath = getServletContext().getRealPath("/") + "assets/properties/";
                         File dir = new File(uploadPath);
                         if (!dir.exists()) dir.mkdirs();
-                        imagePart.write(uploadPath + File.separator + propertyId + ".jpg");
-                    }
 
+                // Handle main image update (keep current or set default if missing)
+                Part mainImagePart = request.getPart("main_image");
+                if (mainImagePart != null && mainImagePart.getSize() > 0) {
+                    String mainImageFileName = "main_" + propertyId + "_" + System.currentTimeMillis() + ".jpg";
+                    mainImagePart.write(uploadPath + File.separator + mainImageFileName);
+                    existing.setMainImage(mainImageFileName);
+                } else if (existing.getMainImage() == null || existing.getMainImage().trim().isEmpty()) {
+                    existing.setMainImage("default.jpg");
+                }
+
+                // Handle additional images update
+                String[] imageNames = {"image1", "image2", "image3", "image4", "image5"};
+                
+                for (int i = 0; i < imageNames.length; i++) {
+                    Part imagePart = request.getPart(imageNames[i]);
+                    if (imagePart != null && imagePart.getSize() > 0) {
+                        String imageFileName = "img" + (i+1) + "_" + propertyId + "_" + System.currentTimeMillis() + ".jpg";
+                        imagePart.write(uploadPath + File.separator + imageFileName);
+                        
+                        switch (i) {
+                            case 0: existing.setImage1(imageFileName); break;
+                            case 1: existing.setImage2(imageFileName); break;
+                            case 2: existing.setImage3(imageFileName); break;
+                            case 3: existing.setImage4(imageFileName); break;
+                            case 4: existing.setImage5(imageFileName); break;
+                        }
+                    }
+                }
+
+                if (propertyService.updatePropertyWithImages(existing)) {
                     response.sendRedirect(request.getContextPath() + "/admin/my-property");
                 } else {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update property.");
@@ -160,7 +213,8 @@ public class MyPropertyServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to process form.");
+            System.out.println("Error in MyPropertyServlet: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to process form: " + e.getMessage());
         }
     }
 }

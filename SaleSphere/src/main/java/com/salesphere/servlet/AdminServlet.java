@@ -79,7 +79,9 @@ public class AdminServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
                 String phone = request.getParameter("phone");
-                String roleInput = "Landlord"; // Force role to Landlord
+                String roleInput = request.getParameter("role");
+                if (roleInput == null || roleInput.trim().isEmpty()) roleInput = "Admin";
+                roleInput = roleInput.equalsIgnoreCase("admin") ? "Admin" : "Landlord";
 
                 Admin admin = new Admin();
                 admin.setFullName(fullName);
@@ -93,14 +95,42 @@ public class AdminServlet extends HttpServlet {
                 } else {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to create seller account.");
                 }
-            } else {
-                // Existing code for other actions
+            } else if ("update".equals(action)) {
+                // Update existing admin (including role change Admin ↔ Landlord)
                 HttpSession session = request.getSession(false);
                 if (session == null || session.getAttribute("admin") == null) {
                     response.sendRedirect(request.getContextPath() + "/admin/login");
                     return;
                 }
-                // ... rest of the existing code ...
+
+                int adminId = Integer.parseInt(request.getParameter("id"));
+                Admin existing = adminService.getAdminById(adminId);
+                if (existing == null) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Admin not found");
+                    return;
+                }
+
+                String fullName = request.getParameter("full_name");
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
+                String phone = request.getParameter("phone");
+                String roleInput = request.getParameter("role");
+                if (roleInput == null || roleInput.trim().isEmpty()) roleInput = existing.getRole();
+                roleInput = roleInput.equalsIgnoreCase("admin") ? "Admin" : "Landlord";
+
+                existing.setFullName(fullName);
+                existing.setEmail(email);
+                existing.setPhone(phone);
+                existing.setRole(roleInput);
+                existing.setPassword((password == null || password.isEmpty()) ? existing.getPassword() : password);
+
+                if (adminService.updateAdmin(existing)) {
+                    response.sendRedirect(request.getContextPath() + "/admin/admin");
+                } else {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update admin");
+                }
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
             }
         } catch (Exception e) {
             e.printStackTrace();

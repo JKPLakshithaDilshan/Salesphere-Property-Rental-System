@@ -62,12 +62,11 @@ public class UserRegisterServlet extends HttpServlet {
         boolean success = userService.createUser(user);
 
         if (success) {
-            request.setAttribute("success", "Registration successful! Please log in.");
+            response.sendRedirect(request.getContextPath() + "/login");
         } else {
             request.setAttribute("error", "Registration failed. Please try again.");
+            request.getRequestDispatcher("/client/register.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("/client/register.jsp").forward(request, response);
     }
 
     @Override

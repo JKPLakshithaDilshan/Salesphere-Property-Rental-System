@@ -21,10 +21,9 @@ public class UserLoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        Buyer user = userService.getUserByEmail(email);
-
-        if (user != null && user.getPassword().equals(password)) {
+        if (userService.verifyPassword(email, password)) {
             // Create session
+            Buyer user = userService.getUserByEmail(email);
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             session.setAttribute("userId", user.getUserId());

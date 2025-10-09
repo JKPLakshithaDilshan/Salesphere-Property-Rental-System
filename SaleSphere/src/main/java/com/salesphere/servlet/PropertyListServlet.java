@@ -24,33 +24,48 @@ public class PropertyListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get search and filter parameters
-        String searchTerm = request.getParameter("search");
-        String statusFilter = request.getParameter("status");
+        try {
+            System.out.println("PropertyListServlet: Starting request processing");
+            
+            // Get search and filter parameters
+            String searchTerm = request.getParameter("search");
+            String statusFilter = request.getParameter("status");
 
-        // Fetch properties based on search/filter or get all
-        List<Property> properties;
-        if ((searchTerm != null && !searchTerm.trim().isEmpty()) ||
-                (statusFilter != null && !statusFilter.trim().isEmpty() && !"all".equalsIgnoreCase(statusFilter))) {
-            properties = propertyService.searchAndFilterProperties(searchTerm, statusFilter);
-        } else {
-            properties = propertyService.getAllProperties();
+            System.out.println("PropertyListServlet: Search term: " + searchTerm + ", Status filter: " + statusFilter);
+
+            // Fetch properties based on search/filter or get all
+            List<Property> properties;
+            if ((searchTerm != null && !searchTerm.trim().isEmpty()) ||
+                    (statusFilter != null && !statusFilter.trim().isEmpty() && !"all".equalsIgnoreCase(statusFilter))) {
+                properties = propertyService.searchAndFilterProperties(searchTerm, statusFilter);
+            } else {
+                properties = propertyService.getAllProperties();
+            }
+
+            System.out.println("PropertyListServlet: Found " + (properties != null ? properties.size() : 0) + " properties");
+
+            request.setAttribute("properties", properties);
+            request.setAttribute("searchTerm", searchTerm != null ? searchTerm : "");
+            request.setAttribute("statusFilter", statusFilter != null ? statusFilter : "all");
+
+            // Check login status and set session attributes
+            HttpSession session = request.getSession(false);
+            if (session != null && session.getAttribute("user") != null) {
+                request.setAttribute("isLoggedIn", true);
+                request.setAttribute("userFullName", session.getAttribute("name"));
+            } else {
+                request.setAttribute("isLoggedIn", false);
+            }
+
+            System.out.println("PropertyListServlet: Forwarding to properties.jsp");
+            
+            // Forward to property listing page
+            request.getRequestDispatcher("/client/properties.jsp").forward(request, response);
+            
+        } catch (Exception e) {
+            System.out.println("PropertyListServlet: Error occurred: " + e.getMessage());
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error loading properties: " + e.getMessage());
         }
-
-        request.setAttribute("properties", properties);
-        request.setAttribute("searchTerm", searchTerm != null ? searchTerm : "");
-        request.setAttribute("statusFilter", statusFilter != null ? statusFilter : "all");
-
-        // Check login status and set session attributes
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            request.setAttribute("isLoggedIn", true);
-            request.setAttribute("userFullName", session.getAttribute("name"));
-        } else {
-            request.setAttribute("isLoggedIn", false);
-        }
-
-        // Forward to property listing page
-        request.getRequestDispatcher("/client/properties.jsp").forward(request, response);
     }
 }

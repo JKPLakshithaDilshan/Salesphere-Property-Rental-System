@@ -411,17 +411,6 @@
                                                 <div class="text-xs text-gray-500">Preferences & privacy</div>
                                             </div>
                                         </a>
-
-                                        <a href="${pageContext.request.contextPath}/settings"
-                                           class="dropdown-item flex items-center px-4 py-3 hover:bg-gray-50 group">
-                                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors">
-                                                <i class="fas fa-cog text-purple-600"></i>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium">Settings</div>
-                                                <div class="text-xs text-gray-500">Preferences & privacy</div>
-                                            </div>
-                                        </a>
                                     </div>
                                     
                                     <!-- Logout Section -->

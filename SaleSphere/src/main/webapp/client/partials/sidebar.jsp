@@ -7,9 +7,14 @@
 
     <!-- Navigation Links -->
     <nav class="space-y-3 w-full">
-        <a href="${pageContext.request.contextPath}/bookings"
+        <a href="${pageContext.request.contextPath}/my-bookings"
            class="flex items-center px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition text-teal-400">
             <i class="fas fa-calendar-alt mr-3"></i> My Bookings
+        </a>
+
+        <a href="${pageContext.request.contextPath}/my-reviews"
+           class="flex items-center px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition text-teal-400">
+            <i class="fas fa-star mr-3"></i> My Reviews
         </a>
 
         <a href="${pageContext.request.contextPath}/profile"

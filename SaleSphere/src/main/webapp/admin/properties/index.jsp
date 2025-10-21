@@ -38,6 +38,7 @@
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Type</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Rent</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Approval</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Landlord</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Image</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Actions</th>
@@ -51,6 +52,17 @@
                                     <td class="px-6 py-4">${property.type}</td>
                                     <td class="px-6 py-4">${property.rent}</td>
                                     <td class="px-6 py-4">${property.status}</td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                                            <c:choose>
+                                                <c:when test="${property.approvalStatus == 'Approved'}">bg-green-500/20 text-green-400</c:when>
+                                                <c:when test="${property.approvalStatus == 'Pending'}">bg-yellow-500/20 text-yellow-400</c:when>
+                                                <c:when test="${property.approvalStatus == 'Rejected'}">bg-red-500/20 text-red-400</c:when>
+                                                <c:otherwise>bg-gray-500/20 text-gray-400</c:otherwise>
+                                            </c:choose>">
+                                            ${property.approvalStatus}
+                                        </span>
+                                    </td>
                                     <td class="px-6 py-4">${property.landlordName}</td>
                                     <td class="px-6 py-4">
                                         <img src="${pageContext.request.contextPath}/assets/properties/${property.propertyId}.jpg" alt="Property Image"

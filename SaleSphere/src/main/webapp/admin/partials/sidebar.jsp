@@ -356,6 +356,13 @@
                 <span class="nav-badge" style="display: none;">12</span>
             </a>
 
+            <!-- Property Approval -->
+            <a href="${pageContext.request.contextPath}/admin/property-approval" class="nav-link" data-section="approval">
+                <i class="nav-icon fas fa-check-circle"></i>
+                <span class="nav-text">Property Approval</span>
+                <span class="nav-badge" style="display: none;">3</span>
+            </a>
+
             <!-- Bookings -->
             <a href="${pageContext.request.contextPath}/admin/booking" class="nav-link" data-section="bookings">
                 <i class="nav-icon fas fa-calendar-check"></i>

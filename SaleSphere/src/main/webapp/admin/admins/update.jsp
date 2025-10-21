@@ -26,7 +26,7 @@
       <div class="mx-auto bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-8 space-y-6">
 
         <div class="flex justify-between items-center">
-          <h3 class="text-lg font-semibold text-blue-400"><i class="fas fa-user-edit mr-2"></i> Edit Admin</h3>
+          <h3 class="text-lg font-semibold text-blue-400"><i class="fas fa-user-edit mr-2"></i> Edit Admin or Seller</h3>
           <a href="${pageContext.request.contextPath}/admin/admin" class="text-sm text-blue-400 hover:underline">
             ← Back to Admin List
           </a>

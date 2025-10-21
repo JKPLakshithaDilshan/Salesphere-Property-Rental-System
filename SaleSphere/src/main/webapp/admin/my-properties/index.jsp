@@ -41,6 +41,7 @@
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Type</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Rent</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Approval</th>
                                 <th class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -66,11 +67,32 @@
                                             ${property.status}
                                         </span>
                                     </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                                            <c:choose>
+                                                <c:when test="${property.approvalStatus == 'Approved'}">bg-green-500/20 text-green-400</c:when>
+                                                <c:when test="${property.approvalStatus == 'Pending'}">bg-yellow-500/20 text-yellow-400</c:when>
+                                                <c:when test="${property.approvalStatus == 'Rejected'}">bg-red-500/20 text-red-400</c:when>
+                                                <c:otherwise>bg-gray-500/20 text-gray-400</c:otherwise>
+                                            </c:choose>">
+                                            ${property.approvalStatus}
+                                        </span>
+                                    </td>
                                     <td class="px-6 py-4 space-x-3">
                                         <a href="${pageContext.request.contextPath}/admin/my-property?action=edit&id=${property.propertyId}"
                                            class="text-blue-400 hover:text-blue-500" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        <c:if test="${property.approvalStatus != 'Pending'}">
+                                            <form method="post" action="${pageContext.request.contextPath}/seller/publish-property" class="inline">
+                                                <input type="hidden" name="propertyId" value="${property.propertyId}">
+                                                <button type="submit" 
+                                                        onclick="return confirm('Submit this property for approval?');"
+                                                        class="text-green-400 hover:text-green-500" title="Publish for Approval">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                            </form>
+                                        </c:if>
                                         <a href="${pageContext.request.contextPath}/admin/my-property?action=delete&id=${property.propertyId}"
                                            onclick="return confirm('Are you sure you want to delete this property?');"
                                            class="text-red-400 hover:text-red-500" title="Delete">

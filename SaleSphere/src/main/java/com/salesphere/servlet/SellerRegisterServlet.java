@@ -58,7 +58,7 @@ public class SellerRegisterServlet extends HttpServlet {
 
         if (success) {
             request.setAttribute("success", "Registration successful! Please log in as a seller.");
-            request.getRequestDispatcher("/client/seller-register.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Registration failed. Please try again.");
             request.getRequestDispatcher("/client/seller-register.jsp").forward(request, response);

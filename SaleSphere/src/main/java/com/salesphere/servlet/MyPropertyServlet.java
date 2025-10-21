@@ -47,7 +47,7 @@ public class MyPropertyServlet extends HttpServlet {
 
         try {
             if (action == null) {
-                List<Property> properties = propertyService.getPropertiesByLandlordId(landlordId);
+                List<Property> properties = propertyService.getPropertiesByLandlordIdWithApproval(landlordId);
                 request.setAttribute("properties", properties);
                 request.getRequestDispatcher("/admin/my-properties/index.jsp").forward(request, response);
 

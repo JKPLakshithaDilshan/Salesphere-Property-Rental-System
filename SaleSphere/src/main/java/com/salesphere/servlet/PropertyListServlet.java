@@ -33,13 +33,13 @@ public class PropertyListServlet extends HttpServlet {
 
             System.out.println("PropertyListServlet: Search term: " + searchTerm + ", Status filter: " + statusFilter);
 
-            // Fetch properties based on search/filter or get all
+            // Fetch properties based on search/filter or get all approved properties
             List<Property> properties;
             if ((searchTerm != null && !searchTerm.trim().isEmpty()) ||
                     (statusFilter != null && !statusFilter.trim().isEmpty() && !"all".equalsIgnoreCase(statusFilter))) {
                 properties = propertyService.searchAndFilterProperties(searchTerm, statusFilter);
             } else {
-                properties = propertyService.getAllProperties();
+                properties = propertyService.getApprovedProperties();
             }
 
             System.out.println("PropertyListServlet: Found " + (properties != null ? properties.size() : 0) + " properties");

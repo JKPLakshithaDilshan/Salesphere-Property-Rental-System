@@ -49,8 +49,14 @@ public class ProcessPaymentServlet extends HttpServlet {
             // For now, we'll simulate successful payment
             session.setAttribute("paymentSuccess", true);
             session.setAttribute("transactionAmount", amount);
-            session.setAttribute("paymentCardLast4",
-                    card.getCard_number().substring(card.getCard_number().length() - 4));
+            
+            // Get the last 4 digits of the card number (decrypt first if needed)
+            String cardNumber = card.getCard_number_plain();
+            if (cardNumber != null && cardNumber.length() >= 4) {
+                session.setAttribute("paymentCardLast4", cardNumber.substring(cardNumber.length() - 4));
+            } else {
+                session.setAttribute("paymentCardLast4", "****");
+            }
 
             // Redirect to success page
             response.sendRedirect(request.getContextPath() + "/client/PaymentSuccessful.jsp");

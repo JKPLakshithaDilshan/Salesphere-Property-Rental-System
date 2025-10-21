@@ -39,7 +39,7 @@ public class PropertyServlet extends HttpServlet {
 
         try {
             if (action == null) {
-                request.setAttribute("properties", propertyService.getAllProperties());
+                request.setAttribute("properties", propertyService.getAllPropertiesForAdmin());
                 request.getRequestDispatcher("/admin/properties/index.jsp").forward(request, response);
 
             } else if ("delete".equals(action)) {

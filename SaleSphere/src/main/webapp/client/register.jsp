@@ -18,7 +18,7 @@
   <!-- Hero -->
   <section class="relative py-20 bg-slate-800 shadow-inner">
     <div class="container mx-auto px-6 text-center">
-      <h1 class="text-4xl font-bold text-teal-400 mb-4">Create Your RentSphere Account</h1>
+      <h1 class="text-4xl font-bold text-teal-400 mb-4">Create Your SaleSphere Account</h1>
       <p class="text-lg text-slate-300 max-w-2xl mx-auto">Book, rent, and manage properties with ease.</p>
     </div>
   </section>
@@ -28,7 +28,7 @@
     <div class="max-w-xl mx-auto bg-slate-800 border border-slate-700 p-10 rounded-xl shadow-2xl">
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-teal-400">Register</h2>
-        <p class="text-sm text-slate-400">Join the RentSphere community</p>
+        <p class="text-sm text-slate-400">Join the SaleSphere community</p>
       </div>
 
       <!-- Error Message -->
@@ -59,7 +59,7 @@
           <label for="email" class="block text-sm font-medium text-slate-300 mb-1">Email</label>
           <input type="email" id="email" name="email" required
                  class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-teal-500"
-                 placeholder="you@example.com" />
+                 placeholder="lakshitha@example.com" />
         </div>
 
         <!-- Phone -->
@@ -89,9 +89,14 @@
         <!-- Password -->
         <div>
           <label for="password" class="block text-sm font-medium text-slate-300 mb-1">Password</label>
-          <input type="password" id="password" name="password" required
-                 class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-teal-500"
-                 placeholder="••••••••" />
+          <div class="relative">
+            <input type="password" id="password" name="password" required
+                   class="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-teal-500"
+                   placeholder="••••••••" />
+            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-teal-400">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
           <div class="mt-2 text-sm space-y-1">
             <p id="lengthHint" class="text-red-500">• At least 8 characters</p>
             <p id="uppercaseHint" class="text-red-500">• At least one uppercase letter</p>
@@ -113,9 +118,10 @@
 <!-- Footer -->
 <%@ include file="./partials/footer.jsp" %>
 
-<!-- JS for Password Validation -->
+<!-- JS for Password Validation and Toggle -->
 <script>
   const passwordInput = document.getElementById("password");
+  const togglePassword = document.getElementById("togglePassword");
   const lengthHint = document.getElementById("lengthHint");
   const uppercaseHint = document.getElementById("uppercaseHint");
   const lowercaseHint = document.getElementById("lowercaseHint");
@@ -140,6 +146,13 @@
     submitBtn.classList.toggle("cursor-not-allowed", !isValid);
     submitBtn.classList.toggle("hover:bg-teal-600", isValid);
   }
+
+  togglePassword.addEventListener("click", () => {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+    togglePassword.querySelector("i").classList.toggle("fa-eye");
+    togglePassword.querySelector("i").classList.toggle("fa-eye-slash");
+  });
 
   passwordInput.addEventListener("input", validatePassword);
 </script>

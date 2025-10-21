@@ -32,7 +32,7 @@
                         <span class="text-xs">#<%= card.getCard_id() %></span>
                     </div>
                     <div class="text-xl font-mono tracking-widest mb-4">
-                        •••• •••• •••• <%= card.getCard_number().substring(card.getCard_number().length() - 4) %>
+                        <%= card.getMaskedCardNumber() %>
                     </div>
                     <div class="mb-2 text-sm">
                         <p>Card Holder</p>
@@ -45,7 +45,7 @@
                         </div>
                         <div>
                             <p>CVV</p>
-                            <p class="font-semibold">•••</p>
+                            <p class="font-semibold"><%= card.getMaskedCvv() %></p>
                         </div>
                     </div>
 

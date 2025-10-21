@@ -67,7 +67,7 @@
                     <span class="text-xs">#<%= selectedCard.getCard_id() %></span>
                 </div>
                 <div class="text-xl font-mono tracking-widest mb-4">
-                    •••• •••• •••• <%= selectedCard.getCard_number().substring(selectedCard.getCard_number().length() - 4) %>
+                    <%= selectedCard.getMaskedCardNumber() %>
                 </div>
                 <div class="mb-2 text-sm">
                     <p>Card Holder</p>

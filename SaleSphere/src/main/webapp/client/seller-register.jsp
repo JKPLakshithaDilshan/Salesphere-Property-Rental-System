@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -401,6 +401,9 @@
 </head>
 
 <body>
+<!-- Header -->
+<%@ include file="./partials/header.jsp" %>
+
 <!-- Floating Background -->
 <div class="floating-bg">
   <div class="floating-shape shape1"></div>
@@ -418,7 +421,7 @@
       <div class="logo-icon">
         <i class="fas fa-store" style="font-size: 1.5rem; color: white;"></i>
       </div>
-      <h1 class="main-title">Join RentSphere</h1>
+      <h1 class="main-title">Join SaleSphere</h1>
       <p class="subtitle">Start your journey as a seller today</p>
     </div>
 

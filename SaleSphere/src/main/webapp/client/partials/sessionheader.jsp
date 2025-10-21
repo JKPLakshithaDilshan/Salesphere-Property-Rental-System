@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RentSphere - Modern Header</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="${pageContext.request.contextPath}/client/assets/favicon.png" type="image/png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -126,20 +127,57 @@
             color: #14b8a6;
             transform: translateY(-2px);
         }
-        
+
         .brand-logo {
-            background: linear-gradient(135deg, #14b8a6, #06b6d4, #8b5cf6);
+            background: linear-gradient(45deg,
+            #06b6d4,
+            #3b82f6,
+            #8b5cf6,
+            #ec4899,
+            #06b6d4
+            );
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            transition: all 0.3s ease;
-            animation: gradientShift 4s ease infinite;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: brandPulse 4s ease-in-out infinite;
+            position: relative;
         }
-        
+        .brand-logo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg,
+            rgba(6, 182, 212, 0.2),
+            rgba(59, 130, 246, 0.2),
+            rgba(139, 92, 246, 0.2),
+            rgba(236, 72, 153, 0.2)
+            );
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        .brand-logo:hover::after {
+            opacity: 1;
+        }
         .brand-logo:hover {
-            animation: glow 1s ease-in-out infinite, gradientShift 4s ease infinite;
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-1px);
+            filter: brightness(1.2);
+        }
+        @keyframes brandPulse {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: hue-rotate(90deg);
+            }
         }
         
         .auth-btn {
@@ -297,13 +335,16 @@
                 <div class="flex justify-between items-center h-20">
                     
                     <!-- Brand -->
-                    <a href="${pageContext.request.contextPath}/" 
-                       class="flex items-center space-x-3 text-2xl font-bold brand-logo hover:scale-105 transition-transform duration-300">
+                    <a href="${pageContext.request.contextPath}/"
+                       class="flex items-center space-x-3 text-2xl font-bold brand-logo hover:scale-105 transition-transform duration-300 z-10">
                         <div class="relative">
-                            <i class="fas fa-building-user text-3xl"></i>
-                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            <i class="fas fa-building-user text-3xl drop-shadow-lg"></i>
+                            <div class="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse shadow-lg"></div>
+                            <div class="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full animate-ping"></div>
                         </div>
-                        <span>SaleSphere</span>
+                        <span class="bg-gradient-to-r from-cyan-400 via-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent font-extrabold tracking-wide">
+                            SaleSphere
+                        </span>
                     </a>
                     
                     <!-- Search Bar (Desktop) -->
@@ -312,9 +353,6 @@
                             <i class="fas fa-search text-gray-400 mr-3"></i>
                             <input type="text" placeholder="Search properties..." 
                                    class="bg-transparent text-white placeholder-gray-400 w-full outline-none">
-                            <div class="ml-2 text-xs text-gray-400 px-2 py-1 bg-gray-700 rounded">
-                                ⌘K
-                            </div>
                         </div>
                     </div>
                     

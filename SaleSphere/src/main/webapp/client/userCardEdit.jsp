@@ -19,7 +19,7 @@
           <span id="cardIdPreview">#<%= card.getCard_id() %></span>
         </div>
         <div class="text-xl font-mono tracking-widest mb-6" id="cardNumberPreview">
-          •••• •••• •••• <%= card.getCard_number().substring(card.getCard_number().length() - 4) %>
+          <%= card.getMaskedCardNumber() %>
         </div>
         <div class="mb-2">
           <p class="text-xs">Card Holder</p>
@@ -32,7 +32,7 @@
           </div>
           <div>
             <p class="text-xs">CVV</p>
-            <p class="font-semibold text-md">•••</p>
+            <p class="font-semibold text-md"><%= card.getMaskedCvv() %></p>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
 
         <div>
           <label class="block mb-1 font-medium text-gray-700">Card Number</label>
-          <input type="text" value="•••• •••• •••• <%= card.getCard_number().substring(card.getCard_number().length() - 4) %>" readonly class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-100 cursor-not-allowed" />
+          <input type="text" value="<%= card.getMaskedCardNumber() %>" readonly class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-100 cursor-not-allowed" />
         </div>
 
         <div class="grid grid-cols-2 gap-4">
@@ -67,7 +67,7 @@
 			</div>
           <div>
             <label class="block mb-1 font-medium text-gray-700">CVV</label>
-            <input type="password" value="•••" readonly class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-100 cursor-not-allowed" />
+            <input type="password" value="<%= card.getMaskedCvv() %>" readonly class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-100 cursor-not-allowed" />
           </div>
         </div>
 

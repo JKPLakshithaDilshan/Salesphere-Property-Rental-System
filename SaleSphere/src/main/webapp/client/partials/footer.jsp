@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RentSphere - Animated Footer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="client/css/footer.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
+
         * {
             font-family: 'Inter', sans-serif;
         }
@@ -20,11 +22,11 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, 
-                #2dd4bf 0%, 
-                #38bdf8 25%, 
-                #8b5cf6 50%, 
-                #ec4899 75%, 
+            background: linear-gradient(90deg,
+                #2dd4bf 0%,
+                #38bdf8 25%,
+                #8b5cf6 50%,
+                #ec4899 75%,
                 #2dd4bf 100%);
             background-size: 200% 100%;
             animation: gradientFlow 8s ease-in-out infinite;
@@ -37,9 +39,9 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(45, 212, 191, 0.3) 50%, 
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(45, 212, 191, 0.3) 50%,
                 transparent 100%);
             animation: shimmerFlow 3s ease-in-out infinite;
         }

@@ -114,7 +114,7 @@ public class UserService {
 
     // Get User by Email (for login)
     public Buyer getUserByEmail(String email) {
-        String query = "SELECT * FROM users WHERE email = ?";
+        String query = "SELECT * FROM users WHERE LOWER(email) = LOWER(?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, email);
@@ -139,9 +139,21 @@ public class UserService {
 
     // Verify Password
     public boolean verifyPassword(String email, String password) {
-        Buyer user = getUserByEmail(email);
-        if (user != null) {
-            return BCrypt.checkpw(password, user.getPassword());
+        try {
+            Buyer user = getUserByEmail(email);
+            if (user != null) {
+                String hashedPassword = user.getPassword();
+                if (hashedPassword != null && !hashedPassword.isEmpty()) {
+                    return BCrypt.checkpw(password, hashedPassword);
+                } else {
+                    System.err.println("Error: User password is null or empty for email: " + email);
+                }
+            } else {
+                System.err.println("Error: User not found for email: " + email);
+            }
+        } catch (Exception e) {
+            System.err.println("Error verifying password for email " + email + ": " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }

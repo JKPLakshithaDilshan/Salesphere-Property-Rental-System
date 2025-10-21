@@ -8,6 +8,7 @@ public class Property {
 	private String type;
 	private double rent;
 	private String status;
+	private String approvalStatus;
 	private String description;
 	private String createdAt;
 
@@ -43,6 +44,9 @@ public class Property {
 	public String getStatus() {
 		return status;
 	}
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -75,6 +79,9 @@ public class Property {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
 	}
 	public void setDescription(String description) {
 		this.description = description;

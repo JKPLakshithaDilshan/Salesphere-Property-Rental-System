@@ -1,11 +1,15 @@
 package com.salesphere.model;
 
 public class User {
+    private int userId;
     private String fullName;
     private String email;
     private String password;
     private String phone;
 
+    public int getUserId() {
+        return userId;
+    }
     public String getFullName() {
         return fullName;
     }
@@ -17,6 +21,9 @@ public class User {
     }
     public String getPhone() {
         return phone;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     public void setFullName(String fullName) {
         this.fullName = fullName;

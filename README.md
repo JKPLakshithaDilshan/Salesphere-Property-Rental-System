@@ -79,7 +79,7 @@ Homepage for Users and Landlords
    CREATE DATABASE IF NOT EXISTS rentsphere_db;
    USE rentsphere_db;
 
-   -- Tables for users, admins, properties, bookings, reviews, paymentcards, etc.
+   -- Tables for users, admins,sellers, properties, bookings, reviews, paymentcards, etc.
    -- (Paste the full SQL from the history here)
    ```
 
@@ -92,7 +92,7 @@ Homepage for Users and Landlords
      ```
 
 5. **Sample Credentials**
-   - Use the inserted sample data from the SQL script for testing (e.g., users like 'sanjaya@example.com', admins like 'lakshan@example.com').
+   - Use the inserted sample data from the SQL script for testing (e.g., users like 'lakshitha@gmail.com', admins like 'lakshitha@gmail.com').
 
 ## 🖼️ Screenshots
 
@@ -120,10 +120,10 @@ Homepage for Users and Landlords
 
 ### 👨‍✈️ Landlord Side
 #### 👨‍✈️ Landlord Dashboard
-<img src="./Sample Images/my-properties.png" width="100%" alt="Landlord Properties" />
+<img src="./Sample Images/My Properties.png" width="100%" alt="Landlord Properties" />
 
 #### 👨‍✈️ Manage Bookings
-<img src="./Sample Images/bookings.png" width="100%" alt="Bookings View" />
+<img src="./Sample Images/Bookings Management.png" width="100%" alt="Bookings View" />
 
 ### 🧑‍💼 Admin Side
 #### 🧑‍💼 Admin Dashboard

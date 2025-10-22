@@ -1,9 +1,11 @@
--- Create Database
+-- ======================================
+-- DATABASE: rentsphere_db
+-- ======================================
 CREATE DATABASE IF NOT EXISTS rentsphere_db;
 USE rentsphere_db;
 
 -- ==============================
--- Table: users (only Tenants)
+-- TABLE: users (Tenants)
 -- ==============================
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -25,7 +27,7 @@ INSERT INTO users (full_name, email, password, phone, nic_number, address) VALUE
 ('Ishan Fernando', 'ishan@example.com', 'hashed_pass5', '0745566778', '199987654321', 'Matara');
 
 -- ==============================
--- Table: admins (Landlords, Admins)
+-- TABLE: admins (Landlords, Admins)
 -- ==============================
 CREATE TABLE admins (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,8 +39,15 @@ CREATE TABLE admins (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Sample Admins
+INSERT INTO admins (full_name, email, password, phone, role) VALUES
+('Lakshan Fernando', 'lakshan@example.com', 'adminpass1', '0761122334', 'Admin'),
+('Dilani Madushani', 'dilani@example.com', 'landlordpass1', '0756677889', 'Landlord'),
+('Suranga De Silva', 'suranga@example.com', 'landlordpass2', '0709988776', 'Landlord'),
+('Ishara Gunasekara', 'ishara@example.com', 'adminpass2', '0765566778', 'Admin');
+
 -- ==============================
--- Table: sellers (linked to admins)
+-- TABLE: sellers (linked to admins)
 -- ==============================
 CREATE TABLE IF NOT EXISTS sellers (
     seller_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,15 +66,8 @@ FROM admins a
 WHERE a.role = 'Landlord'
 ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), email = VALUES(email), phone = VALUES(phone);
 
--- Sample Admins
-INSERT INTO admins (full_name, email, password, phone, role) VALUES
-('Lakshan Fernando', 'lakshan@example.com', 'adminpass1', '0761122334', 'Admin'),
-('Dilani Madushani', 'dilani@example.com', 'landlordpass1', '0756677889', 'Landlord'),
-('Suranga De Silva', 'suranga@example.com', 'landlordpass2', '0709988776', 'Landlord'),
-('Ishara Gunasekara', 'ishara@example.com', 'adminpass2', '0765566778', 'Admin');
-
 -- ==============================
--- Table: properties
+-- TABLE: properties
 -- ==============================
 CREATE TABLE properties (
     property_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,6 +77,7 @@ CREATE TABLE properties (
     type ENUM('Apartment', 'House', 'Room') NOT NULL,
     rent DECIMAL(10,2) NOT NULL,
     status ENUM('Available', 'Rented', 'Inactive') DEFAULT 'Available',
+    approval_status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
     description TEXT,
     main_image VARCHAR(255),
     image1 VARCHAR(255),
@@ -86,16 +89,16 @@ CREATE TABLE properties (
     FOREIGN KEY (landlord_id) REFERENCES admins(admin_id) ON DELETE CASCADE
 );
 
--- Sample Properties with images
-INSERT INTO properties (landlord_id, title, address, type, rent, status, description, main_image, image1, image2, image3, image4, image5) VALUES
-(2, 'Luxury Apartment in Colombo 7', 'No. 12, Rosmead Place, Colombo 7', 'Apartment', 75000.00, 'Available', 'Modern 2-bedroom apartment with balcony.', '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg'),
-(2, 'Budget Room in Galle', '45A, Light House Street, Galle', 'Room', 18000.00, 'Available', 'Affordable single room near town.', '7.jpg', '8.jpg', '9.jpg', NULL, NULL, NULL),
-(3, 'Family House in Kandy', '123, Hill Street, Kandy', 'House', 65000.00, 'Rented', 'Spacious family house with garden and garage.', '1.jpg', '2.jpg', '3.jpg', '4.jpg', NULL, NULL),
-(3, 'Studio Apartment in Negombo', '8C, Beach Road, Negombo', 'Apartment', 32000.00, 'Available', 'Ideal for a couple, walking distance to beach.', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', NULL),
-(2, 'Single Room in Matara', '22, Weligama Road, Matara', 'Room', 15000.00, 'Available', 'Furnished single room in a quiet neighborhood.', '1.jpg', '2.jpg', NULL, NULL, NULL, NULL);
+-- Sample Properties
+INSERT INTO properties (landlord_id, title, address, type, rent, status, approval_status, description, main_image, image1, image2, image3, image4, image5) VALUES
+(2, 'Luxury Apartment in Colombo 7', 'No. 12, Rosmead Place, Colombo 7', 'Apartment', 75000.00, 'Available', 'Approved', 'Modern 2-bedroom apartment with balcony.', '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg'),
+(2, 'Budget Room in Galle', '45A, Light House Street, Galle', 'Room', 18000.00, 'Available', 'Approved', 'Affordable single room near town.', '7.jpg', '8.jpg', '9.jpg', NULL, NULL, NULL),
+(3, 'Family House in Kandy', '123, Hill Street, Kandy', 'House', 65000.00, 'Rented', 'Approved', 'Spacious family house with garden and garage.', '1.jpg', '2.jpg', '3.jpg', '4.jpg', NULL, NULL),
+(3, 'Studio Apartment in Negombo', '8C, Beach Road, Negombo', 'Apartment', 32000.00, 'Available', 'Approved', 'Ideal for a couple, walking distance to beach.', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', NULL),
+(2, 'Single Room in Matara', '22, Weligama Road, Matara', 'Room', 15000.00, 'Available', 'Approved', 'Furnished single room in a quiet neighborhood.', '1.jpg', '2.jpg', NULL, NULL, NULL, NULL);
 
 -- ==============================
--- Table: bookings
+-- TABLE: bookings
 -- ==============================
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -116,7 +119,7 @@ INSERT INTO bookings (tenant_id, property_id, booking_date, status) VALUES
 (5, 5, '2025-05-05', 'Cancelled');
 
 -- ==============================
--- Table: reviews
+-- TABLE: reviews
 -- ==============================
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -138,7 +141,7 @@ INSERT INTO reviews (property_id, tenant_id, rating, comment) VALUES
 (5, 5, 2, 'Affordable but noisy neighborhood.');
 
 -- ==============================
--- Table: PaymentCards
+-- TABLE: PaymentCards
 -- ==============================
 CREATE TABLE IF NOT EXISTS PaymentCards (
     card_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -178,7 +181,7 @@ JOIN users u ON b.tenant_id = u.user_id
 JOIN properties p ON b.property_id = p.property_id;
 
 -- ==============================
--- VIEW: reviews_view (FIXED - Added property_id and tenant_id)
+-- VIEW: reviews_view
 -- ==============================
 DROP VIEW IF EXISTS reviews_view;
 CREATE VIEW reviews_view AS
@@ -208,8 +211,54 @@ SELECT
     p.type,
     p.rent,
     p.status,
+    p.approval_status,
     COALESCE(s.full_name, a.full_name) AS landlord_name,
     COALESCE(s.email, a.email) AS landlord_email
 FROM properties p
 JOIN admins a ON p.landlord_id = a.admin_id
 LEFT JOIN sellers s ON s.admin_id = a.admin_id;
+
+-- ======================================
+-- ENCRYPTION MIGRATION SCRIPT
+-- ======================================
+USE rentsphere_db;
+
+-- ==============================
+-- BACKUP EXISTING DATA
+-- ==============================
+CREATE TABLE IF NOT EXISTS PaymentCards_backup AS 
+SELECT * FROM PaymentCards;
+
+-- ==============================
+-- UPDATE TABLE SCHEMA
+-- ==============================
+ALTER TABLE PaymentCards 
+MODIFY COLUMN card_number VARCHAR(255) NOT NULL,
+MODIFY COLUMN cvv VARCHAR(255) NOT NULL;
+
+-- ==============================
+-- MIGRATION NOTES
+-- ==============================
+-- Note: The actual encryption of existing data should be done through the application
+-- using the EncryptionUtil class, not through SQL directly.
+-- 
+-- Migration steps:
+-- 1. Run this schema update
+-- 2. Use the application's PaymentCardService to re-save all existing cards
+-- 3. The service will automatically encrypt the data during the update process
+
+-- ==============================
+-- VERIFICATION QUERIES
+-- ==============================
+-- DESCRIBE PaymentCards;
+-- SELECT COUNT(*) as backup_count FROM PaymentCards_backup;
+-- SELECT COUNT(*) as current_count FROM PaymentCards;
+
+-- ==============================
+-- ROLLBACK INSTRUCTIONS
+-- ==============================
+-- DROP TABLE PaymentCards;
+-- RENAME TABLE PaymentCards_backup TO PaymentCards;
+-- ALTER TABLE PaymentCards 
+-- MODIFY COLUMN card_number VARCHAR(20) NOT NULL,
+-- MODIFY COLUMN cvv VARCHAR(10) NOT NULL;

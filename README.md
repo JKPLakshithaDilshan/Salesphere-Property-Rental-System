@@ -1,4 +1,4 @@
-# SaleSphere — Property Rental Web App
+<img width="1896" height="900" alt="Payment Confirmation" src="https://github.com/user-attachments/assets/5250d79e-88f5-49c9-b197-e242f9fcb987" /># SaleSphere — Property Rental Web App
 
 ## 🏠 Project Overview
 
@@ -112,7 +112,9 @@ Homepage for Users and Landlords
 #### 🧍 Book a Property
 <img src="./Sample Images/book.png" width="100%" alt="Booking Confirmation" />
 
-#### 🧍 Payment Success
+#### 🧍 Payment Conform & Success
+
+<img src="./Sample Images/Payment Confirmation.png" width="100%" alt="Payment Success" />
 <img src="./Sample Images/payment_success.png" width="100%" alt="Payment Success" />
 
 #### 🧍 Leave Review

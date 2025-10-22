@@ -1,5 +1,3 @@
-<img width="1896" height="900" alt="Payment Confirmation" src="https://github.com/user-attachments/assets/5250d79e-88f5-49c9-b197-e242f9fcb987" /># SaleSphere — Property Rental Web App
-
 ## 🏠 Project Overview
 
 SaleSphere is a comprehensive property rental web application designed to connect tenants with landlords in a seamless and secure manner. Developed as a university-level project using Java Servlets, JSP, MySQL, and HTML/CSS/JavaScript (with Tailwind CSS), it facilitates property listings, bookings, reviews, and payments for urban housing needs.

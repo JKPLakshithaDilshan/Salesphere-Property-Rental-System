@@ -107,6 +107,7 @@ Homepage for Users and Landlords
 
 #### 🧍 Browse Properties
 <img src="./Sample Images/properties.png" width="100%" alt="Properties List" />
+<img src="./Sample Images/properties..png" width="100%" alt="Properties List" />
 
 #### 🧍 Book a Property
 <img src="./Sample Images/book.png" width="100%" alt="Booking Confirmation" />
